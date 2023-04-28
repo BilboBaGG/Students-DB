@@ -166,6 +166,19 @@ public:
 		}
 	}
 
+	int Find(Template element) {
+		Element<Template>* tempElementPointer = firstPointer;
+		Element<Template>* elementPointer = firstPointer;
+		for (int i = 0; i < length; ++i) {
+			elementPointer = tempElementPointer;
+			if (elementPointer->GetElement() == element) {
+				return i;
+			}
+			tempElementPointer = tempElementPointer->GetPointer();
+		}
+		return -1;
+	}
+
 	void Print() {
 		Element<Template>* tempElementPointer = firstPointer;
 
