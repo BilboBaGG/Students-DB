@@ -1,10 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
+#include <string>
 
 #include "menu.h"
 #include "list.h"
 #include "settings.h"
 #include "student.h"
+
+#include "marks.h"
 
 using namespace std;
 
@@ -29,5 +32,9 @@ int main() {
 	Student kolobok{ "Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin" };
 
 	cout << kolobok.GetBirthday().GetYear();
+
+	Marks mark{ 1 };
+	mark.GetSubjects()[0]->SetMark(10);
+	cout << mark.GetSubjects()[0]->GetMark();
 
 }

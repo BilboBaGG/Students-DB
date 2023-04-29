@@ -1,14 +1,13 @@
-#include <string>
 #include <fstream>
 
 #include "date.h"
+#include "marks.h"
 
 class Student {
 private:
 	string name, surname, patronymic, institute, department, group, recordBookNumber, gender;
 	Date birthday;
 	int admissionYear;
-	// MARKS
 
 public:
 	Student() {
@@ -159,7 +158,6 @@ public:
 		int day = birthday.GetDay();
 		int month = birthday.GetMonth();
 		int year = birthday.GetYear();
-
 
 		of.write((char*)&day, sizeof(int));
 		of.write((char*)&month, sizeof(int));

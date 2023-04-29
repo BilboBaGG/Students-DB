@@ -166,6 +166,22 @@ public:
 		}
 	}
 
+	Template Get(int index) {
+		if (index < 0) index = length + index;
+		if (index >= length) {
+			throw "Invalid Index";
+		}
+		else {
+			int counter = 0;
+			Element<Template>* tempElementPointer = firstPointer;
+			while (counter != index) {
+				tempElementPointer = tempElementPointer->GetPointer();
+				counter += 1;
+			}
+			return tempElementPointer->GetElement();
+		}
+	}
+
 	int Find(Template element) {
 		Element<Template>* tempElementPointer = firstPointer;
 		Element<Template>* elementPointer = firstPointer;
