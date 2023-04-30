@@ -28,13 +28,18 @@ int main() {
 	misha.SetAdmissionYear(1000);
 
 	misha.Write();
-	*/
+	
 	Student kolobok{ "Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin" };
 
-	cout << kolobok.GetBirthday().GetYear();
-
+	cout << kolobok.GetBirthday().GetYear() << endl;
+	*/
 	Marks mark{ 1 };
-	mark.GetSubjects()[0]->SetMark(10);
-	cout << mark.GetSubjects()[0]->GetMark();
+
+	mark.AddSubjectMark("Math", 5);
+
+
+	for (int i = 0; i < 10; ++i) {
+		cout << mark.GetSubjects()[i]->GetName() << ":" << mark.GetSubjects()[i]->GetMark() << endl;
+	}
 
 }

@@ -1,13 +1,13 @@
 #pragma once
 
 class Subject {
+private:
+	int mark;
+	string name;
 public:
-	Subject(int mark_, string name_) {
+	Subject(string name_, int mark_) {
 		mark = mark_;
 		name = name_;
-	}
-	~Subject() {
-
 	}
 
 	int GetMark() {
@@ -23,10 +23,6 @@ public:
 	void SetName(string name_) {
 		name = name_;
 	}
-
-private:
-	int mark;
-	string name;
 };
 
 class Marks {
@@ -37,7 +33,7 @@ public:
 	Marks(int semesterNumber_) {
 		semesterNumber = semesterNumber_;
 		for (int i = 0; i < 10; ++i) {
-			Subject* temp = new Subject(0, ""); 
+			Subject* temp = new Subject("", 0); 
 			subjects.Append(temp);
 		}
 		subjectsNumber = 0;
@@ -55,4 +51,19 @@ public:
 	List<Subject*>& GetSubjects() {
 		return subjects;
 	}
+
+	void AddSubjectMark(string name, int mark) {
+		subjects[subjectsNumber]->SetMark(mark);
+		subjects[subjectsNumber]->SetName(name);
+		subjectsNumber += 1;
+	}
+
+	void SetSubjectMark(string name, int mark) {
+		for (int i = 0; i < subjectsNumber; ++i) {
+			if (name == subjects[subjectsNumber]->GetName()) {
+				subjects[subjectsNumber]->SetMark(mark);
+			}
+		}
+	}
+
 };
