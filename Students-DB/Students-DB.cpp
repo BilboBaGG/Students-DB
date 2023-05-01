@@ -36,10 +36,27 @@ int main() {
 	Marks mark{ 1 };
 
 	mark.AddSubjectMark("Math", 5);
+	mark.AddSubjectMark("Russian", 5);
+	mark.AddSubjectMark("Giga", 5);
+	mark.AddSubjectMark("Hola", 5);
+
 
 
 	for (int i = 0; i < 10; ++i) {
-		cout << mark.GetSubjects()[i]->GetName() << ":" << mark.GetSubjects()[i]->GetMark() << endl;
+		cout << mark.GetSubject(i).GetName() << ":" << mark.GetSubject(i).GetMark() << endl;
 	}
+	cout <<  mark.GetSubjectsNumber();
+	cout << "\n";
+	mark.DeleteMark("Russian");
+	
+	for (int i = 0; i < 10; ++i) {
+		cout << mark.GetSubject(i).GetName() << ":" << mark.GetSubject(i).GetMark() << endl;
+	}
+	cout << mark.GetSubjectsNumber() << endl;
 
+	mark.SetSubjectMark("Giga", 3);
+
+	for (int i = 0; i < 10; ++i) {
+		cout << mark.GetSubject(i).GetName() << ":" << mark.GetSubject(i).GetMark() << endl;
+	}
 }

@@ -48,20 +48,39 @@ public:
 		return subjectsNumber;
 	}
 
+	/*
 	List<Subject*>& GetSubjects() {
 		return subjects;
+	}
+	*/
+
+	Subject& GetSubject(int index) {
+		return *subjects[index];
 	}
 
 	void AddSubjectMark(string name, int mark) {
 		subjects[subjectsNumber]->SetMark(mark);
 		subjects[subjectsNumber]->SetName(name);
 		subjectsNumber += 1;
+		// Sort
 	}
 
 	void SetSubjectMark(string name, int mark) {
 		for (int i = 0; i < subjectsNumber; ++i) {
-			if (name == subjects[subjectsNumber]->GetName()) {
-				subjects[subjectsNumber]->SetMark(mark);
+			if (name == subjects[i]->GetName()) {
+				subjects[i]->SetMark(mark);
+			}
+		}
+	}
+	
+	void DeleteMark(string name) {
+		for (int i = 0; i < subjectsNumber; ++i) {
+			if (subjects[i]->GetName() == name) {
+				delete subjects[i];
+				subjects.Delete(i);
+				subjects.Append(new Subject("", 0));
+				subjectsNumber -= 1;
+				break;
 			}
 		}
 	}
