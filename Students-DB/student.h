@@ -8,6 +8,7 @@ private:
 	string name, surname, patronymic, institute, department, group, recordBookNumber, gender;
 	Date birthday;
 	int admissionYear;
+	List<Marks*> marks;
 
 public:
 	Student() {
@@ -23,6 +24,11 @@ public:
 		Date clearDate;
 		birthday = clearDate;
 		admissionYear = 0;
+
+		for (int i = 0; i < 9; ++i) {
+			Marks* temp = new Marks(i+1);
+			marks.Append(temp);
+		}
 	}
 
 	Student(string filename) {
@@ -68,7 +74,31 @@ public:
 
 		ifs.read((char*)&admissionYear, sizeof(int));
 
+		char tempSubjectName[80]{};
+		int tempSubjectMark = 0;
+
+		for (int i = 0; i < 9; ++i) {
+			Marks* temp = new Marks(i + 1);
+			marks.Append(temp);
+		}
+
+		for (int i = 0; i < 9; ++i) {
+			for (int j = 0; j < 10; ++j) {
+				ifs.read((char*)&tempSubjectName, sizeof(char) * 80);
+				marks[i]->GetSubject(j).SetName(tempSubjectName);
+
+				ifs.read((char*)&tempSubjectMark, sizeof(int));
+				marks[i]->GetSubject(j).SetMark(tempSubjectMark);
+			}
+		}
+
 		ifs.close();
+	}
+
+	~Student() {
+		for (int i = 0; i < 9; ++i) {
+			delete marks[i];
+		}
 	}
 
 	string GetName() {
@@ -141,6 +171,10 @@ public:
 		birthday = birthday_;
 	}
 
+	Marks& GetSemesterMarks(int semesterNumber) {
+		return *(marks[semesterNumber - 1]);
+	}
+
 	void Write() {
 		string path = "./Students/" + institute + "/" + group + "/" + surname + "_" + name + "_" + patronymic + ".bin";
 
@@ -166,6 +200,17 @@ public:
 		
 		of.write((char*)&admissionYear, sizeof(int));
 
+		for (int i = 0; i < 9; ++i) {
+			for (int j = 0; j < 10; ++j) {
+				string subjectName = marks[i]->GetSubject(j).GetName();
+				int subjectMark = marks[i]->GetSubject(j).GetMark();
+				of.write(subjectName.c_str(), sizeof(char) * 80);
+				of.write((char*)&subjectMark, sizeof(int));
+			}
+		}
+
 		of.close();
+
+		// encode
 	}
 };
