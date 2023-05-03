@@ -1,13 +1,14 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
+#include <sstream>
 
-#include "menu.h"
 #include "list.h"
+#include "menu.h"
 #include "settings.h"
 #include "student.h"
-
 #include "marks.h"
+#include "file_functions.h"
 
 using namespace std;
 
@@ -27,29 +28,22 @@ int main() {
 	misha.SetBirthday(date);
 	misha.SetAdmissionYear(1000);
 	
-	misha.GetSemesterMarks(1).AddSubjectMark("asd", 123);
-	misha.GetSemesterMarks(8).AddSubjectMark("jjj", 5);
+	misha.GetSemesterMarks(1).AddSubjectMark("Math", 5);
+	misha.GetSemesterMarks(8).AddSubjectMark("Math", 5);
+	misha.GetSemesterMarks(8).AddSubjectMark("Russian", 4);
+	misha.GetSemesterMarks(6).AddSubjectMark("Programming", 3);
 
-	misha.GetSemesterMarks(6).AddSubjectMark("asjdfjasfj", 123);
+	Write(&misha);
+
+	//Student kolobok = Read("filename.bin");
+	//cout << kolobok.GetName();
 
 
-
-	/*for (int j = 0; j < 9; ++j) {
-		for (int i = 0; i < 10; ++i) {
-			cout << misha.GetSemesterMarks(j + 1).GetSubject(i).GetName() << ":" << misha.GetSemesterMarks(j + 1).GetSubject(i).GetMark() << endl;
-		}
-		cout << "\n";
-	}*/
-
-	misha.Write();
-
-	Student kolobok{ "Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin" };
-
-	for (int j = 0; j < 9; ++j) {
-		for (int i = 0; i < 10; ++i) {
-			cout << kolobok.GetSemesterMarks(j + 1).GetSubject(i).GetName() << ":" << kolobok.GetSemesterMarks(j + 1).GetSubject(i).GetMark() << endl;
-		}
-		cout << "\n";
-	}
+	//for (int j = 0; j < 9; ++j) {
+		//for (int i = 0; i < 10; ++i) {
+			//cout << kolobok.GetSemesterMarks(j + 1).GetSubject(i).GetName() << ":" << kolobok.GetSemesterMarks(j + 1).GetSubject(i).GetMark() << endl;
+		//}
+		//cout << "\n";
+	//}
 
 }

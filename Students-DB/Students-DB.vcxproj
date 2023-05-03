@@ -130,6 +130,7 @@
     <ClCompile Include="Students-DB.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="file_functions.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="settings.h" />

@@ -32,5 +32,8 @@
     <ClInclude Include="marks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="file_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

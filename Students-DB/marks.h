@@ -32,35 +32,39 @@ private:
 public:
 	Marks(int semesterNumber_) {
 		semesterNumber = semesterNumber_;
-		for (int i = 0; i < 10; ++i) {
-			Subject* temp = new Subject("", 0); 
-			subjects.Append(temp);
-		}
 		subjectsNumber = 0;
 	}
 	~Marks() {
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < subjectsNumber; ++i) {
 			delete subjects[i];
 		}
+	}
+	
+	int GetSemesterNumber() {
+		return semesterNumber;
 	}
 
 	int GetSubjectsNumber() {
 		return subjectsNumber;
 	}
 
-	/*
-	List<Subject*>& GetSubjects() {
-		return subjects;
-	}
-	*/
-
 	Subject& GetSubject(int index) {
 		return *subjects[index];
 	}
 
+	string GetParsedMarks() {
+		string out = "";
+		for (int i = 0; i < subjectsNumber; ++i) {
+			out += subjects[i]->GetName() + ":" + to_string(subjects[i]->GetMark());
+			if (i != subjectsNumber - 1) {
+				out += ":";
+			}
+		}
+		return out;
+	}
+
 	void AddSubjectMark(string name, int mark) {
-		subjects[subjectsNumber]->SetMark(mark);
-		subjects[subjectsNumber]->SetName(name);
+		subjects.Append(new Subject(name, mark));
 		subjectsNumber += 1;
 		// Sort
 	}
@@ -73,6 +77,8 @@ public:
 		}
 	}
 	
+	
+
 	void DeleteMark(string name) {
 		for (int i = 0; i < subjectsNumber; ++i) {
 			if (subjects[i]->GetName() == name) {

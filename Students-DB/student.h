@@ -1,5 +1,3 @@
-#include <fstream>
-
 #include "date.h"
 #include "marks.h"
 
@@ -9,7 +7,6 @@ private:
 	Date birthday;
 	int admissionYear;
 	List<Marks*> marks;
-
 public:
 	Student() {
 		name = "";
@@ -29,70 +26,6 @@ public:
 			Marks* temp = new Marks(i+1);
 			marks.Append(temp);
 		}
-	}
-
-	Student(string filename) {
-		ifstream ifs;
-		ifs.open(filename, ios::binary | ios::in);
-
-		char temp[15]{};
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		name = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		surname = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		patronymic = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		institute = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		department = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		group = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		recordBookNumber = temp;
-
-		ifs.read((char*)&temp, sizeof(char) * 15);
-		gender = temp;
-
-		int day = 0;
-		int month = 0;
-		int year = 0;
-
-		ifs.read((char*)&day, sizeof(int));
-		ifs.read((char*)&month, sizeof(int));
-		ifs.read((char*)&year, sizeof(int));
-
-		Date date{ day, month, year};
-		birthday = date;
-
-		ifs.read((char*)&admissionYear, sizeof(int));
-
-		char tempSubjectName[80]{};
-		int tempSubjectMark = 0;
-
-		for (int i = 0; i < 9; ++i) {
-			Marks* temp = new Marks(i + 1);
-			marks.Append(temp);
-		}
-
-		for (int i = 0; i < 9; ++i) {
-			for (int j = 0; j < 10; ++j) {
-				ifs.read((char*)&tempSubjectName, sizeof(char) * 80);
-				marks[i]->GetSubject(j).SetName(tempSubjectName);
-
-				ifs.read((char*)&tempSubjectMark, sizeof(int));
-				marks[i]->GetSubject(j).SetMark(tempSubjectMark);
-			}
-		}
-
-		ifs.close();
 	}
 
 	~Student() {
@@ -175,42 +108,19 @@ public:
 		return *(marks[semesterNumber - 1]);
 	}
 
-	void Write() {
-		string path = "./Students/" + institute + "/" + group + "/" + surname + "_" + name + "_" + patronymic + ".bin";
+	string StringParseMarks() {
+		string parsedMarks = "";
 
-		ofstream of;
-		of.open(path, ios::binary | ios::out);
-		of.write(name.c_str(), sizeof(char) * 15);
-		of.write(surname.c_str(), sizeof(char) * 15);
-		of.write(patronymic.c_str(), sizeof(char) * 15);
-		of.write(institute.c_str(), sizeof(char) * 15);
-		of.write(department.c_str(), sizeof(char) * 15);
-		of.write(group.c_str(), sizeof(char) * 15);
-		of.write(recordBookNumber.c_str(), sizeof(char) * 15);
-		of.write(gender.c_str(), sizeof(char) * 15);
 
-		int day = birthday.GetDay();
-		int month = birthday.GetMonth();
-		int year = birthday.GetYear();
-
-		of.write((char*)&day, sizeof(int));
-		of.write((char*)&month, sizeof(int));
-		of.write((char*)&year, sizeof(int));
-
-		
-		of.write((char*)&admissionYear, sizeof(int));
-
-		for (int i = 0; i < 9; ++i) {
-			for (int j = 0; j < 10; ++j) {
-				string subjectName = marks[i]->GetSubject(j).GetName();
-				int subjectMark = marks[i]->GetSubject(j).GetMark();
-				of.write(subjectName.c_str(), sizeof(char) * 80);
-				of.write((char*)&subjectMark, sizeof(int));
+		for (int i = 0; i < marks.Length(); ++i) {
+			if (marks[i]->GetSubjectsNumber()!=0) {	
+				parsedMarks += to_string(marks[i]->GetSemesterNumber()) + ":" + marks[i]->GetParsedMarks();
+				if (i != marks.Length() - 1) {
+					parsedMarks += "\n";
+				}
 			}
 		}
-
-		of.close();
-
-		// encode
+		return parsedMarks;
 	}
+
 };
