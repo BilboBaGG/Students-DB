@@ -4,17 +4,17 @@
 #include <sstream>
 
 #include "list.h"
-#include "menu.h"
 #include "settings.h"
 #include "student.h"
 #include "marks.h"
 #include "file_functions.h"
+#include "menu.h"
 
 using namespace std;
 
 int main() {
-	system(CLEAR_COMMAND);
 
+	MainMenu::Run();
 
 	Student misha;
 	misha.SetName("Mikhail");

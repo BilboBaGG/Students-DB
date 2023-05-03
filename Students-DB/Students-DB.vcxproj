@@ -133,6 +133,7 @@
     <ClInclude Include="file_functions.h" />
     <ClInclude Include="list.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="printers.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="marks.h" />
   </ItemGroup>

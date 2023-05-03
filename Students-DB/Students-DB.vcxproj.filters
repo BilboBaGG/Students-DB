@@ -35,5 +35,8 @@
     <ClInclude Include="file_functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="printers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
