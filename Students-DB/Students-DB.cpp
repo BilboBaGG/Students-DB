@@ -14,7 +14,7 @@ using namespace std;
 
 int main() {
 
-	MainMenu::Run();
+	MainChooseMenu::Run("institute");
 
 	Student misha;
 	misha.SetName("Mikhail");

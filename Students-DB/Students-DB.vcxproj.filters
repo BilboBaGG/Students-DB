@@ -38,5 +38,11 @@
     <ClInclude Include="printers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="directory_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="object_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

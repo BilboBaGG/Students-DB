@@ -1,11 +1,13 @@
 #pragma once
 
+string currentPath = ".\\Students";
+
 #include <conio.h>
 #include <windows.h>
 
 #include "printers.h"
-
-string currentPath = "./Students";
+#include "directory_functions.h"
+#include "object_functions.h"
 
 class InputMenu {
 public:
@@ -14,7 +16,7 @@ public:
 		int key = 0;
 		bool reload = true;
 		system(CLEAR_COMMAND);
-		PrintParam(message + inputString);
+		PrintOneParam(message + inputString);
 		while (true) {
 			key = _getch();
 			switch (key)
@@ -32,7 +34,7 @@ public:
 				}
 				break;
 			default:
-				if (inputString.length() <= 30 && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z')) {
+				if (inputString.length() <= 30 && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0')) {
 					inputString += string(1, key);
 					AddNewLetter(key);
 					break;
@@ -46,7 +48,7 @@ class InfoMenu {
 public:
 	static void Run(string message) {
 		system(CLEAR_COMMAND);
-		PrintParam(message);
+		PrintOneParam(message);
 		int key = 0;
 		while (true) {
 			key = _getch();
@@ -57,21 +59,25 @@ public:
 	}
 };
 
-class MainMenu {
+class MainChooseMenu {
 public:
-	static void Run() {
-		
+	static void Run(string object) {
+
 		int selectedOption = 0;
 		int pressedKey = 0;
 		bool isExit = false;
 
-		List<string> params;
-		params.Append("asd");
+		List<string>& backupParams = GetNewInstituteParams(currentPath, object);
+		List<string>& params = GetNewInstituteParams(currentPath, object);
+
+		params[0] = GREEN + params[0] + RESET;
+
+		int identicalButtonsNumber = params.Length() - 2;
 
 		while (true) {
 			system(CLEAR_COMMAND);
 
-			PrintParams(params);
+			PrintParams(params, backupParams, "Choose " + object, identicalButtonsNumber);
 
 			pressedKey = _getch();
 
@@ -80,29 +86,59 @@ public:
 			case ESC:
 				isExit = true;
 				break;
-
 			case ARROW_DOWN:
+				params[selectedOption] = backupParams[selectedOption];
 				selectedOption += 1;
-				selectedOption %= params.Length();
+				selectedOption %= backupParams.Length();
+				params[selectedOption] = GREEN + params[selectedOption] + RESET; // Make Button Selecteds
 				break;
 			case ARROW_UP:
-				selectedOption -= 1;
-				selectedOption %= params.Length();
+				params[selectedOption] = backupParams[selectedOption];
+				if (selectedOption == 0) {
+					selectedOption = backupParams.Length() - 1;
+				}
+				else {
+					selectedOption -= 1;
+					selectedOption %= backupParams.Length();
+				}
+				params[selectedOption] = GREEN + params[selectedOption] + RESET;
 				break;
 			case ENTER:
-				// Next menu
-				string temp = InputMenu::Run("Enter the name of the new institution : ").c_str();
+				if (selectedOption < identicalButtonsNumber) {
+					if (object == "institute") {
+						currentPath += "\\" + backupParams[selectedOption];
+						MainChooseMenu::Run("group");
+						RestoreCurrentPath();
+					} else {
+						InfoMenu::Run("GOOD");
+					}
+				} else {
+					string tempObject = InputMenu::Run("Enter the name of the new " + object + " : ").c_str();
 
-				if (temp != "{{ESC}}") {
-					params.Append(temp);
-					InfoMenu::Run("Secsess");
+					if (tempObject != "{{ESC}}" && tempObject.length() > 0) {
+						MakeDirectory(currentPath + "\\" + tempObject);
+
+						// Params Reset
+						backupParams = GetNewInstituteParams(currentPath, object);
+						params = GetNewInstituteParams(currentPath, object);
+						params[0] = GREEN + params[0] + RESET;
+						selectedOption = 0;
+
+						identicalButtonsNumber = params.Length() - 2;
+
+						InfoMenu::Run("Successfully added" + object);
+					}
+
 				}
-
 				break;
 			}
 
 			if (isExit) {
 				system(CLEAR_COMMAND);
+
+				delete& backupParams;
+				delete& params;
+
 				break;
 			}
 		}
