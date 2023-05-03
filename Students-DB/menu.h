@@ -7,22 +7,51 @@
 
 string currentPath = "./Students";
 
-class CreateNewInstituteMenu {
+class InputMenu {
 public:
-	static void Run() {
+	static string Run(string message) {
 		string inputString = "";
-		char key = 0;
+		int key = 0;
+		bool reload = true;
+		system(CLEAR_COMMAND);
+		PrintParam(message + inputString);
 		while (true) {
-			system(CLEAR_COMMAND);
-			PrintParam("Enter the name of the new institution (30 symbols max) : " + inputString);
 			key = _getch();
 			switch (key)
 			{
+			case (ESC):
+				inputString = "{{ESC}}";
+				return inputString;
+			case (ENTER):
+				return inputString;
+				break;
+			case (BACKSPACE):
+				if (inputString.length() > 0) {
+					ClearLastLetter(message + inputString);
+					inputString = inputString.substr(0, inputString.length() - 1);
+				}
+				break;
 			default:
 				if (inputString.length() <= 30 && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z')) {
 					inputString += string(1, key);
+					AddNewLetter(key);
 					break;
 				}
+			}
+		}
+	}
+};
+
+class InfoMenu {
+public:
+	static void Run(string message) {
+		system(CLEAR_COMMAND);
+		PrintParam(message);
+		int key = 0;
+		while (true) {
+			key = _getch();
+			if (key == ESC || key == ENTER) {
+				break;
 			}
 		}
 	}
@@ -43,7 +72,6 @@ public:
 			system(CLEAR_COMMAND);
 
 			PrintParams(params);
-			cout << currentPath << endl;
 
 			pressedKey = _getch();
 
@@ -63,7 +91,13 @@ public:
 				break;
 			case ENTER:
 				// Next menu
-				CreateNewInstituteMenu::Run();
+				string temp = InputMenu::Run("Enter the name of the new institution : ").c_str();
+
+				if (temp != "{{ESC}}") {
+					params.Append(temp);
+					InfoMenu::Run("Secsess");
+				}
+
 				break;
 			}
 

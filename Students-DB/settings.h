@@ -13,5 +13,7 @@
 #define ARROW_RIGHT 0x4d
 #define ARROW_DOWN 0x50
 
+#define BACKSPACE 0x8
+
 #define ENTER 0xD
 
