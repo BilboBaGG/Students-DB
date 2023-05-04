@@ -13,8 +13,8 @@
 using namespace std;
 
 int main() {
-	InstituteSelectionMenu start;
-	start.Run();
+	InstituteSelectionMenu startMenu;
+	startMenu.Run();
 
 	Student misha;
 	misha.SetName("Mikhail");
