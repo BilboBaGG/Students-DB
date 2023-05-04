@@ -56,3 +56,7 @@ void DeleteDirectory(string dirName) {
     system(rmdirCommand.c_str());
 }
 
+void DeleteStudentFile(string fileName) {
+    string rmFileCommand = "del " + fileName;
+    system(rmFileCommand.c_str());
+}

@@ -2,28 +2,25 @@
 
 #include <fstream>
 
-void Write(Student* studentPointer) {
+void Write(Student& student) {
+	string path = "./Students/" + student.GetInstitute() + "/" + student.GetGroup() + "/" + student.GetSurname() + "_" + student.GetName() + "_" + student.GetPatronymic() + ".bin";
 
-	//ofstream of;
+	ofstream of;
 
-	//of.open("./filename.bin", ios::binary | ios::out);
-
-	//of.write(studentPointer->StringParseMarks().c_str(),sizeof(char) * (studentPointer->StringParseMarks().length()+2));
-	//
-	//of.close();
+	of.open(path, ios::binary | ios::out);
+	of.write((char*)&student, sizeof(Student));
+	of.close();
 
 	// encode
 }
 
-//Student& Read(string filename) {
-	//ifstream ifs;
-	//cout << "asd";
-	//ifs.open(filename.c_str(), ios::binary | ios::in | ios::trunc);
-	//Student temp;
-	//ifs.read((char*)&temp,sizeof(Student));
-	//cout << ">>>>" << temp.GetName() << "\n";
-	//ifs.close();
-	//return temp;
-//}
+Student& Read(string filename) {
+	ifstream ifs;
+	ifs.open(filename.c_str(), ios::binary | ios::in );
+	Student* temp = new Student();
+	ifs.read((char*)temp,sizeof(Student));
+	ifs.close();
 
-	//string path = "./Students/" + pointer->GetInstitute() + "/" + pointer->GetGroup() + "/" + pointer->GetSurname() + "_" + pointer->GetName() + "_" + pointer->GetPatronymic() + ".bin";
+	return *temp;
+}
+

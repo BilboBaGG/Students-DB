@@ -1,6 +1,3 @@
-#include <iostream>
-using namespace std;
-
 template <typename Template>
 class Element {
 private:

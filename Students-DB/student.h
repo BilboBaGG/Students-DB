@@ -78,6 +78,7 @@ public:
 	string GetGender() {
 		return gender;
 	}
+
 	void SetGender(string gender_) {
 		strcpy(gender, gender_.c_str());
 	}
@@ -110,19 +111,19 @@ public:
 		}
 		return mark;
 	}
-
-	//int GetSubjcetName(int semesterNumber_, int index) {
-	//	subject
-	//	for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-	//		if (!strcmp(subjectName.c_str(), subjectNames[semesterNumber_][i])) {
-	//			mark = marks[semesterNumber_][i];
-	//			break;
-	//		}
-	//	}
-	//	return mark;
-	//}
-
 	
+	void DeleteSubject(int semesterNumber_, string subjectName) {
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
+				strcpy(subjectNames[semesterNumber_][i], "");
+				marks[semesterNumber_][i] = 0;
+			}
+		}
+	}
+
+	string GetSubjcetName(int semesterNumber_, int index) {
+		return subjectNames[semesterNumber_][index];
+	}
 
 	int GetMarksNumberInSemester(int semesterNumber_) {
 		int countMarks = 0;

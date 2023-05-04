@@ -3,54 +3,48 @@
 #include <string>
 #include <sstream>
 
+using namespace std;
+
 #include "list.h"
 #include "settings.h"
 #include "student.h"
-#include "marks.h"
 #include "file_functions.h"
 #include "menu.h"
-
-using namespace std;
 
 int main() {
 	InstituteSelectionMenu startMenu;
 	startMenu.Run();
 
-	Student misha;
-	misha.SetName("Mikhail");
-	misha.SetSurname("Kobyak");
-	misha.SetPatronymic("Evgenyevich");
-	misha.SetGroup("BISO-01-22");
-	misha.SetInstitute("IKB");
-	misha.SetRecordBookNumber(string(30, 'h'));
-	Date date = { 10, 1110, 22 };
+	//Student misha;
+	//misha.SetName("Mikhail");
+	//misha.SetSurname("Kobyak");
+	//misha.SetPatronymic("Evgenyevich");
+	//misha.SetGroup("BISO-01-22");
+	//misha.SetInstitute("IKB");
+	//misha.SetRecordBookNumber(string(30, 'h'));
+	//Date date = { 10, 1110, 22 };
 
-	misha.SetBirthday(date);
-	misha.SetAdmissionYear(1000);
+	//misha.SetBirthday(date);
+	//misha.SetAdmissionYear(1000);
 
-	misha.AddMark(0,"Math",5);
+	//misha.AddMark(0,"Math",5);
+	//misha.AddMark(0,"Russian",5);
+	//misha.AddMark(4, "Latin", 2);
 
-	for (int i = 0; i < SEMESTERS_NUMBER; ++i) {
-		cout << misha.GetMark(0, i) << endl;
-	}
-
-	cout << misha.GetMark(0, "Math");
-	
-	//misha.GetSemesterMarks(1).AddSubjectMark("Math", 5);
-	//misha.GetSemesterMarks(8).AddSubjectMark("Math", 5);
-	//misha.GetSemesterMarks(8).AddSubjectMark("Russian", 4);
-	//misha.GetSemesterMarks(6).AddSubjectMark("Programming", 3);
-
-	Write(&misha);
+	//Write(misha);
 
 	//Student kolobok = Read("filename.bin");
-	//cout << kolobok.GetName();
 
+	//kolobok.DeleteSubject(0, "Math");
 
-	//for (int j = 0; j < 9; ++j) {
-		//for (int i = 0; i < 10; ++i) {
-			//cout << kolobok.GetSemesterMarks(j + 1).GetSubject(i).GetName() << ":" << kolobok.GetSemesterMarks(j + 1).GetSubject(i).GetMark() << endl;
-		//}
-		//cout << "\n";
+	//kolobok.AddMark(0, "Math", 5);
+
+	//for (int j = 0; j < SEMESTERS_NUMBER; ++j) {
+	//	cout << j << " semester\n";
+	//	for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+	//		cout << kolobok.GetSubjcetName(j, i) << " : " << kolobok.GetMark(j, i) << endl;
+	//	}
+	//	cout << "\n";
 	//}
+	//cout << kolobok.GetMarksNumberInSemester(0);
 }
