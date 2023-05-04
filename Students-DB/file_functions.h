@@ -4,13 +4,13 @@
 
 void Write(Student* studentPointer) {
 
-	ofstream of;
+	//ofstream of;
 
-	of.open("./filename.bin", ios::binary | ios::out);
+	//of.open("./filename.bin", ios::binary | ios::out);
 
-	of.write(studentPointer->StringParseMarks().c_str(),sizeof(char) * (studentPointer->StringParseMarks().length()+2));
-	
-	of.close();
+	//of.write(studentPointer->StringParseMarks().c_str(),sizeof(char) * (studentPointer->StringParseMarks().length()+2));
+	//
+	//of.close();
 
 	// encode
 }

@@ -22,16 +22,24 @@ int main() {
 	misha.SetPatronymic("Evgenyevich");
 	misha.SetGroup("BISO-01-22");
 	misha.SetInstitute("IKB");
-
+	misha.SetRecordBookNumber(string(30, 'h'));
 	Date date = { 10, 1110, 22 };
 
 	misha.SetBirthday(date);
 	misha.SetAdmissionYear(1000);
+
+	misha.AddMark(0,"Math",5);
+
+	for (int i = 0; i < SEMESTERS_NUMBER; ++i) {
+		cout << misha.GetMark(0, i) << endl;
+	}
+
+	cout << misha.GetMark(0, "Math");
 	
-	misha.GetSemesterMarks(1).AddSubjectMark("Math", 5);
-	misha.GetSemesterMarks(8).AddSubjectMark("Math", 5);
-	misha.GetSemesterMarks(8).AddSubjectMark("Russian", 4);
-	misha.GetSemesterMarks(6).AddSubjectMark("Programming", 3);
+	//misha.GetSemesterMarks(1).AddSubjectMark("Math", 5);
+	//misha.GetSemesterMarks(8).AddSubjectMark("Math", 5);
+	//misha.GetSemesterMarks(8).AddSubjectMark("Russian", 4);
+	//misha.GetSemesterMarks(6).AddSubjectMark("Programming", 3);
 
 	Write(&misha);
 

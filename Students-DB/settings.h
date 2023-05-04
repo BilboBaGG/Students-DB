@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+// Consts
+#define SEMESTERS_NUMBER 9
+#define SUBJECTS_NUMBER 10
 
 // Commands
 #if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)

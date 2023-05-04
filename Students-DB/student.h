@@ -1,36 +1,28 @@
 #include "date.h"
-#include "marks.h"
+//#include "marks.h"
 
 class Student {
+
 private:
-	string name, surname, patronymic, institute, department, group, recordBookNumber, gender;
+	char name[31] = "", surname[31] = "", patronymic[31] = "", institute[31] = "", department[31] = "", group[31] = "", recordBookNumber[31] = "", gender[31] = "";
 	Date birthday;
 	int admissionYear;
-	List<Marks*> marks;
+	int marks[SEMESTERS_NUMBER][SUBJECTS_NUMBER];
+	char subjectNames[SEMESTERS_NUMBER][SUBJECTS_NUMBER][30];
+
+	// List<Marks*> marks;
+
 public:
 	Student() {
-		name = "";
-		surname = "";
-		patronymic = "";
-
-		institute = "";
-		department = "";
-		group = "";
-		recordBookNumber = "";
-		gender = "";
 		Date clearDate;
 		birthday = clearDate;
 		admissionYear = 0;
 
 		for (int i = 0; i < 9; ++i) {
-			Marks* temp = new Marks(i+1);
-			marks.Append(temp);
-		}
-	}
-
-	~Student() {
-		for (int i = 0; i < 9; ++i) {
-			delete marks[i];
+			for (int j = 0; j < 10; ++j) {
+				marks[i][j] = 0;
+				strcpy(subjectNames[i][j], "");
+			}
 		}
 	}
 
@@ -38,56 +30,56 @@ public:
 		return name;
 	}
 	void SetName(string name_) {
-		name = name_;
+		strcpy(name, name_.c_str());
 	}
 
 	string GetSurname() {
 		return surname;
 	}
 	void SetSurname(string surname_) {
-		surname = surname_;
+		strcpy(surname, surname_.c_str());
 	}
 
 	string GetPatronymic() {
 		return patronymic;
 	}
 	void SetPatronymic(string patronymic_) {
-		patronymic = patronymic_;
+		strcpy(patronymic, patronymic_.c_str());
 	}
 
 	string GetInstitute() {
 		return institute;
 	}
 	void SetInstitute(string institute_) {
-		institute = institute_;
+		strcpy(institute, institute_.c_str());
 	}
 
 	string GetDepartment() {
 		return department;
 	}
 	void SetDepartment(string department_) {
-		department = department_;
+		strcpy(department, department_.c_str());
 	}
 
 	string GetGroup() {
 		return group;
 	}
 	void SetGroup(string group_) {
-		group = group_;
+		strcpy(group, group_.c_str());
 	}
 
 	string GetRecordBookNumber() {
 		return recordBookNumber;
 	}
 	void SetRecordBookNumber(string recordBookNumber_) {
-		recordBookNumber = recordBookNumber_;
+		strcpy(recordBookNumber, recordBookNumber_.c_str());
 	}
 
 	string GetGender() {
 		return gender;
 	}
 	void SetGender(string gender_) {
-		gender = gender_;
+		strcpy(gender, gender_.c_str());
 	}
 
 	int GetAdmissionYear() {
@@ -104,11 +96,62 @@ public:
 		birthday = birthday_;
 	}
 
-	Marks& GetSemesterMarks(int semesterNumber) {
-		return *(marks[semesterNumber - 1]);
+	int GetMark(int semesterNumber_, int index) {
+		return marks[semesterNumber_][index];
 	}
 
-	string StringParseMarks() {
+	int GetMark(int semesterNumber_, string subjectName) {
+		int mark = 0;
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (!strcmp(subjectName.c_str(), subjectNames[semesterNumber_][i])) {
+				mark = marks[semesterNumber_][i];
+				break;
+			}
+		}
+		return mark;
+	}
+
+	//int GetSubjcetName(int semesterNumber_, int index) {
+	//	subject
+	//	for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+	//		if (!strcmp(subjectName.c_str(), subjectNames[semesterNumber_][i])) {
+	//			mark = marks[semesterNumber_][i];
+	//			break;
+	//		}
+	//	}
+	//	return mark;
+	//}
+
+	
+
+	int GetMarksNumberInSemester(int semesterNumber_) {
+		int countMarks = 0;
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (marks[semesterNumber_][i] == 0) {
+				break;
+			}
+			else {
+				countMarks += 1;
+			}
+		}
+		return countMarks;
+	}
+
+	void AddMark(int semesterNumber_, string subjectName, int mark) {
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (marks[semesterNumber_][i] == 0) {
+				marks[semesterNumber_][i] = mark;
+				strcpy(subjectNames[semesterNumber_][i], subjectName.c_str());
+				break;
+			}
+		}
+	}
+
+	/*Marks& GetSemesterMarks(int semesterNumber) {
+		return *(marks[semesterNumber - 1]);
+	}*/
+
+	/*string StringParseMarks() {
 		string parsedMarks = "";
 
 
@@ -121,6 +164,6 @@ public:
 			}
 		}
 		return parsedMarks;
-	}
+	}*/
 
 };

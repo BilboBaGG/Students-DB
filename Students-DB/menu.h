@@ -201,8 +201,6 @@ private:
 		identicalButtonsNumber = params.Length() - 2;
 	}
 
-	virtual void Printer() {}
-
 	void StartFunction() {
 		ResetParams();
 	}
@@ -265,11 +263,6 @@ private:
 
 		}
 	}
-
-	void DefaultKeyPressed(int pressedKey) {}
-
-	void ExitFunction() {}
-
 };
 
 class GroupSelectionMenu : public virtual MainChooseMenu {
@@ -296,7 +289,7 @@ public:
 	}
 private:
 	void Printer() {
-		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from database", identicalButtonsNumber);
+		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from DB", identicalButtonsNumber);
 	}
 	void NextMenuRun(string selectedParam) {
 		currentPath += "\\" + selectedParam;
