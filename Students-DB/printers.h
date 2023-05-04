@@ -70,7 +70,23 @@ void PrintOneParam(string param) {
 	SetPrintable(param);
 }
 
-void PrintParams(List<string>& params, List<string>& backupParams, string header, int identicalButtonsNumber) {
+void PrintParams(List<string>& params, List<string>& backupParams, string header) {
+	PrintHeader(header);
+	for (int i = 0; i < params.Length(); ++i) {
+		string param = params[i];
+		string backupParam = backupParams[i];
+
+		if (backupParam.length() % 2 == 1) {
+			param += " ";
+			backupParam += " ";
+		}
+
+		cout << "|" << string((LINE_LENGTH - 2 - backupParam.length()) / 2, ' ') << param << string((LINE_LENGTH - 2 - backupParam.length()) / 2, ' ') << "|\n";
+	}
+	PrintLine();
+}
+
+void PrintParamsWithExtraButtons(List<string>& params, List<string>& backupParams, string header, int identicalButtonsNumber) {
 	PrintHeader(header);
 	for (int i = 0; i < params.Length(); ++i) {
 		if (i == identicalButtonsNumber) PrintClearLine();

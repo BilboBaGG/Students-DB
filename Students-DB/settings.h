@@ -1,11 +1,16 @@
 ﻿#pragma once
 
+
+// Commands
 #if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)
 	#define CLEAR_COMMAND "cls" // Windows
 #elif defined(__linux__)
 	#define CLEAR_COMMAND "clear" // Linux
 #endif
 
+#define ESCAPE_STRING "{{ESC}}"
+
+// Buttons
 #define ESC 0x1b
 
 #define ARROW_UP 0x48
@@ -17,7 +22,10 @@
 
 #define ENTER 0xD
 
-//Colors
+// Time
+#define SLEEP 15
+
+// Colors
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"					/* Black */

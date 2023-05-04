@@ -22,7 +22,7 @@ public:
 			switch (key)
 			{
 			case (ESC):
-				inputString = "{{ESC}}";
+				inputString = ESCAPE_STRING;
 				return inputString;
 			case (ENTER):
 				return inputString;
@@ -59,6 +59,65 @@ public:
 	}
 };
 
+class SelectParamMenu {
+public:
+	static string Run(string object, string header) {
+
+		int selectedOption = 0;
+		int pressedKey = 0;
+
+		List<string>& backupParams = GetNewObjectParams(currentPath);
+		List<string>& params = GetNewObjectParams(currentPath);
+
+		params[0] = GREEN + params[0] + RESET;
+
+		while (true) {
+			system(CLEAR_COMMAND);
+
+			PrintParams(params, backupParams, header);
+			Sleep(SLEEP);
+
+			pressedKey = _getch();
+
+			switch (pressedKey) {
+
+			case ESC:
+				system(CLEAR_COMMAND);
+
+				delete& backupParams;
+				delete& params;
+
+				return ESCAPE_STRING;
+			case ARROW_DOWN:
+				params[selectedOption] = backupParams[selectedOption];
+				selectedOption += 1;
+				selectedOption %= backupParams.Length();
+				params[selectedOption] = GREEN + params[selectedOption] + RESET; 
+				break;
+			case ARROW_UP:
+				params[selectedOption] = backupParams[selectedOption];
+				if (selectedOption == 0) {
+					selectedOption = backupParams.Length() - 1;
+				}
+				else {
+					selectedOption -= 1;
+					selectedOption %= backupParams.Length();
+				}
+				params[selectedOption] = GREEN + params[selectedOption] + RESET;
+				break;
+			case ENTER:
+
+				string selectedObject = backupParams[selectedOption];
+				
+				return selectedObject;
+				break;
+			}
+
+		}
+	}
+};
+
+
 class MainChooseMenu {
 public:
 	static void Run(string object) {
@@ -67,8 +126,8 @@ public:
 		int pressedKey = 0;
 		bool isExit = false;
 
-		List<string>& backupParams = GetNewInstituteParams(currentPath, object);
-		List<string>& params = GetNewInstituteParams(currentPath, object);
+		List<string>& backupParams = GetNewObjectParamsWithExtraParams(currentPath, object);
+		List<string>& params = GetNewObjectParamsWithExtraParams(currentPath, object);
 
 		params[0] = GREEN + params[0] + RESET;
 
@@ -77,7 +136,8 @@ public:
 		while (true) {
 			system(CLEAR_COMMAND);
 
-			PrintParams(params, backupParams, "Choose " + object, identicalButtonsNumber);
+			PrintParamsWithExtraButtons(params, backupParams, "Select " + object, identicalButtonsNumber);
+			Sleep(SLEEP);
 
 			pressedKey = _getch();
 
@@ -113,20 +173,48 @@ public:
 						InfoMenu::Run("GOOD");
 					}
 				} else {
-					string tempObject = InputMenu::Run("Enter the name of the new " + object + " : ").c_str();
+					if (IsAdditionMenu(selectedOption, identicalButtonsNumber)) {
+						string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ").c_str();
 
-					if (tempObject != "{{ESC}}" && tempObject.length() > 0) {
-						MakeDirectory(currentPath + "\\" + tempObject);
+						/*while (selectedObject == "") {
+							InfoMenu::Run("You should write something!");
+							selectedObject = SelectParamMenu::Run(object, "Select " + object + " to delete");
+						}*/
 
-						// Params Reset
-						backupParams = GetNewInstituteParams(currentPath, object);
-						params = GetNewInstituteParams(currentPath, object);
-						params[0] = GREEN + params[0] + RESET;
-						selectedOption = 0;
+						if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
+							MakeDirectory(currentPath + "\\" + createdObject);
 
-						identicalButtonsNumber = params.Length() - 2;
+							// Params Reset
+							backupParams = GetNewObjectParamsWithExtraParams(currentPath, object);
+							params = GetNewObjectParamsWithExtraParams(currentPath, object);
+							params[0] = GREEN + params[0] + RESET;
+							selectedOption = 0;
 
-						InfoMenu::Run("Successfully added" + object);
+							identicalButtonsNumber = params.Length() - 2;
+
+							InfoMenu::Run("Successfully added " + object + "!");
+						}
+					}
+					else {
+						if (identicalButtonsNumber > 0) {
+							string selectedObject = SelectParamMenu::Run(object, "Select " + object + " to delete");
+							if (selectedObject != ESCAPE_STRING) {
+								DeleteDirectory(currentPath + "\\" + selectedObject);
+
+								// Params Reset
+								backupParams = GetNewObjectParamsWithExtraParams(currentPath, object);
+								params = GetNewObjectParamsWithExtraParams(currentPath, object);
+								params[0] = GREEN + params[0] + RESET;
+								selectedOption = 0;
+								identicalButtonsNumber = params.Length() - 2;
+
+								InfoMenu::Run("Successfully deleted " + object + "!");
+							}
+						}
+						else {
+							InfoMenu::Run("Nothing to delete!");
+						}
+
 					}
 
 				}

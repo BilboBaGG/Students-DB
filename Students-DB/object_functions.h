@@ -1,12 +1,18 @@
 #pragma once
 
-List<string>& GetNewInstituteParams(string currentPath, string object) {
+List<string>& GetNewObjectParamsWithExtraParams(string currentPath, string object) {
 	List<string>* params = GetObjectsFromDir(currentPath);
 
 	params->Append("Create new " + object);
 	params->Append("Delete " + object);
 
 	return *params;
+}
+
+List<string>& GetNewObjectParams(string currentPath) {
+    List<string>* params = GetObjectsFromDir(currentPath);
+
+    return *params;
 }
 
 void RestoreCurrentPath() {
@@ -27,4 +33,12 @@ void RestoreCurrentPath() {
     }
 
     currentPath = newCurrentPath;
+}
+
+bool IsAdditionMenu(int selectedOption, int identicalButtonsNumber) {
+    return selectedOption == identicalButtonsNumber;
+}
+
+bool IsObjectExists() {
+    return true;
 }
