@@ -120,8 +120,11 @@ public:
 
 class MainChooseMenu {
 public:
-	static void Run(string object) {
+	virtual void NextMenuRun(string selectedParam) = 0;
+	virtual string SetObject() = 0;
 
+	void Run() {
+		string object = SetObject();
 		int selectedOption = 0;
 		int pressedKey = 0;
 		bool isExit = false;
@@ -164,14 +167,11 @@ public:
 				params[selectedOption] = GREEN + params[selectedOption] + RESET;
 				break;
 			case ENTER:
+
 				if (selectedOption < identicalButtonsNumber) {
-					if (object == "institute") {
-						currentPath += "\\" + backupParams[selectedOption];
-						MainChooseMenu::Run("group");
-						RestoreCurrentPath();
-					} else {
-						InfoMenu::Run("GOOD");
-					}
+
+					NextMenuRun(backupParams[selectedOption]);
+
 				} else {
 					if (IsAdditionMenu(selectedOption, identicalButtonsNumber)) {
 						string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ").c_str();
@@ -230,5 +230,26 @@ public:
 				break;
 			}
 		}
+	}
+};
+
+class GroupSelectionMenu : public MainChooseMenu {
+	string SetObject() {
+		return "group";
+	}
+	void NextMenuRun(string selectedParam) {
+		InfoMenu::Run("OK");
+	}
+};
+
+class InstituteSelectionMenu : public MainChooseMenu {
+	string SetObject() {
+		return "institute";
+	}
+	void NextMenuRun(string selectedParam) {
+		currentPath += "\\" + selectedParam;
+		GroupSelectionMenu groupMenu;
+		groupMenu.Run();
+		RestoreCurrentPath();
 	}
 };

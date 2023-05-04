@@ -52,7 +52,7 @@ void MakeDirectory(string dirName) {
 }
 
 void DeleteDirectory(string dirName) {
-    string rmdirCommand = "rmdir " + dirName;
+    string rmdirCommand = "rmdir /s /q " + dirName;
     system(rmdirCommand.c_str());
 }
 
