@@ -4,9 +4,7 @@
 
 void Write(Student& student) {
 	string path = "./Students/" + student.GetInstitute() + "/" + student.GetGroup() + "/" + student.GetSurname() + "_" + student.GetName() + "_" + student.GetPatronymic() + ".bin";
-
 	ofstream of;
-
 	of.open(path, ios::binary | ios::out);
 	of.write((char*)&student, sizeof(Student));
 	of.close();

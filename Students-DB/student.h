@@ -4,11 +4,11 @@
 class Student {
 
 private:
-	char name[31] = "", surname[31] = "", patronymic[31] = "", institute[31] = "", department[31] = "", group[31] = "", recordBookNumber[31] = "", gender[31] = "";
+	char name[DEFAULT_STRING_LENGTH] = "", surname[DEFAULT_STRING_LENGTH] = "", patronymic[DEFAULT_STRING_LENGTH] = "", institute[DEFAULT_STRING_LENGTH] = "", department[DEFAULT_STRING_LENGTH] = "", group[DEFAULT_STRING_LENGTH] = "", recordBookNumber[RECORD_BOOK_STR_LENGTH] = "", gender[2] = "";
 	Date birthday;
 	int admissionYear;
 	int marks[SEMESTERS_NUMBER][SUBJECTS_NUMBER];
-	char subjectNames[SEMESTERS_NUMBER][SUBJECTS_NUMBER][30];
+	char subjectNames[SEMESTERS_NUMBER][SUBJECTS_NUMBER][31];
 
 	// List<Marks*> marks;
 

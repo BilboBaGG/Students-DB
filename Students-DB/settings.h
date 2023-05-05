@@ -2,11 +2,13 @@
 
 #pragma warning(suppress : 4996)
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
-#define _CRT_SECURE_NO_WARNIGNS
 
 // Consts
 #define SEMESTERS_NUMBER 9
 #define SUBJECTS_NUMBER 10
+
+#define DEFAULT_STRING_LENGTH 31
+#define RECORD_BOOK_STR_LENGTH 9
 
 // Commands
 #if defined(_WIN32) || defined(__CYGWIN__) || defined(_WIN64)

@@ -13,8 +13,9 @@ using namespace std;
 #include "menu.h"
 
 int main() {
-	InstituteSelectionMenu startMenu{};
+	InstituteSelectionMenu startMenu;
 	startMenu.Run();
+	
 
 	/*Student misha;
 	misha.SetName("Mikhail");
@@ -22,7 +23,7 @@ int main() {
 	misha.SetPatronymic("Evgenyevich");
 	misha.SetGroup("BISO-01-22");
 	misha.SetInstitute("IKB");
-	misha.SetRecordBookNumber(string(30, 'h'));
+	misha.SetRecordBookNumber(string(8, 'h'));
 	Date date = { 10, 1110, 22 };
 
 	misha.SetBirthday(date);
@@ -34,7 +35,7 @@ int main() {
 
 	Write(misha);
 
-	Student kolobok = Read("filename.bin");
+	Student kolobok = Read("./Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin");
 
 	kolobok.DeleteSubject(0, "Math");
 

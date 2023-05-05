@@ -12,6 +12,7 @@ private:
 	void virtual OnUpArrow() {}
 	void virtual OnEnter() {}
 	void virtual DefaultKeyPressed(int pressedKey) {}
+	virtual void OnEsc() {}
 
 	virtual void ExitFunction() {}
 
@@ -114,5 +115,60 @@ public:
 				break;
 			}
 		}
+	}
+};
+
+class MainChooseMenu : public virtual MenuModel {
+protected:
+	string object = "";
+	List<string>& backupParams = GetClearList();
+	List<string>& params = GetClearList();
+
+	int identicalButtonsNumber = 0;
+	int selectedOption = 0;
+
+	virtual List<string>& ParseParams() { return GetClearList(); }
+	virtual void NextMenuRun(string selectedParam) = 0;
+	virtual string InputMenu() { return ""; }
+
+	void ResetParams() {
+		backupParams = ParseParams();
+		params = ParseParams();
+		params[0] = GREEN + params[0] + RESET;
+		selectedOption = 0;
+
+		identicalButtonsNumber = params.Length() - 2;
+	}
+
+	void StartFunction() {
+		ResetParams();
+	}
+
+	// Move selector down
+	void OnDownArrow() {
+		params[selectedOption] = backupParams[selectedOption];
+		selectedOption += 1;
+		selectedOption %= backupParams.Length();
+		params[selectedOption] = GREEN + params[selectedOption] + RESET;
+	}
+
+	// Move selector up
+	void OnUpArrow() {
+		params[selectedOption] = backupParams[selectedOption];
+		if (selectedOption == 0) {
+			selectedOption = backupParams.Length() - 1;
+		}
+		else {
+			selectedOption -= 1;
+			selectedOption %= backupParams.Length();
+		}
+		params[selectedOption] = GREEN + params[selectedOption] + RESET;
+	}
+
+	virtual void OnEnter() {}
+
+	void ExitFunction() {
+		delete& backupParams;
+		delete& params;
 	}
 };

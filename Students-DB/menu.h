@@ -13,7 +13,7 @@ string currentPath = ".\\Students";
 
 class InputMenu {
 public:
-	static string Run(string message, string iString) {
+	static string Run(string message, string iString, int maxLength) {
 		string inputString = iString;
 		int key = 0;
 		system(CLEAR_COMMAND);
@@ -35,7 +35,7 @@ public:
 				}
 				break;
 			default:
-				if (inputString.length() <= 30 && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0')) {
+				if (inputString.length() <= maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0')) {
 					inputString += string(1, key);
 					AddNewLetter(key);
 					break;
@@ -101,9 +101,9 @@ private:
 	}
 };
 
-class SelectDelParam : public virtual SelectParamMenu {
+class SelectParam : public virtual SelectParamMenu {
 public:
-	SelectDelParam(string object_, string header_) {
+	SelectParam(string object_, string header_) {
 		object = object_;
 		header = header_;
 	}
@@ -128,52 +128,31 @@ public:
 	}
 };
 
-class MainChooseMenu : public virtual MenuModel {
-protected:
-	string object = "";
-	List<string>& backupParams = GetClearList();
-	List<string>& params = GetClearList();
+class StudentsOptionSelectionMenu : public virtual MainChooseMenu {
+public:
+	StudentsOptionSelectionMenu() {
+		object = "option";
 
-	int identicalButtonsNumber = 0;
-	int selectedOption = 0;
-
+	}
 private:
-	virtual List<string>& ParseParams(string object) = 0;
-	virtual void NextMenuRun(string selectedParam) = 0;
-
-	void ResetParams() {
-		backupParams = ParseParams(object);
-		params = ParseParams(object);
-		params[0] = GREEN + params[0] + RESET;
-		selectedOption = 0;
-
-		identicalButtonsNumber = params.Length() - 2;
+	string header = "Select option to view students";
+	List<string>& ParseParams() {
+		List<string>* clearParams = new List<string>;
+		clearParams->Append("Print all students");
+		clearParams->Append("Divide students by grades (Variant 73)");
+		return *clearParams;
+	}
+	void NextMenuRun(string selectedParam) {}
+	void Printer() {
+		PrintParams(params, backupParams, header);
 	}
 
-	void StartFunction() {
-		ResetParams();
-	}
+};
 
-	// Move selector down
-	void OnDownArrow() {
-		params[selectedOption] = backupParams[selectedOption];
-		selectedOption += 1;
-		selectedOption %= backupParams.Length();
-		params[selectedOption] = GREEN + params[selectedOption] + RESET;
-	}
-
-	// Move selector up
-	void OnUpArrow() {
-		params[selectedOption] = backupParams[selectedOption];
-		if (selectedOption == 0) {
-			selectedOption = backupParams.Length() - 1;
-		}
-		else {
-			selectedOption -= 1;
-			selectedOption %= backupParams.Length();
-		}
-		params[selectedOption] = GREEN + params[selectedOption] + RESET;
-	}
+class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
+protected:
+	virtual List<string>& ParseParams() { return GetClearList(); }
+	virtual void OnCreate(string createdObject) {}
 
 	void OnEnter() {
 		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
@@ -181,12 +160,12 @@ private:
 		}
 		else {
 			if (IsAdditionMenu(selectedOption, identicalButtonsNumber)) {
-				string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "").c_str();
+				string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
 
 				// Need to create validation
 
 				if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
-					MakeDirectory(currentPath + "\\" + createdObject);
+					OnCreate(createdObject);
 
 					ResetParams();
 
@@ -195,9 +174,10 @@ private:
 			}
 			else {
 				if (identicalButtonsNumber > 0) {
-					SelectDelParam delMenu = SelectDelParam(object, "Select " + object + " to delete");
+
+					SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
 					string selectedObject = delMenu.Run();
-					//string selectedObject = SelectParamMenu::Run(object, "Select " + object + " to delete");
+
 					if (selectedObject != ESCAPE_STRING) {
 						DeleteDirectory(currentPath + "\\" + selectedObject);
 
@@ -216,29 +196,37 @@ private:
 	}
 };
 
-class GroupSelectionMenu : public virtual MainChooseMenu {
+class GroupSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	GroupSelectionMenu() {
 		object = "group";
 	}
 private:
+	void OnCreate(string createdObject) {
+		MakeDirectory(currentPath + "\\" + createdObject);
+	}
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetLastParam(), identicalButtonsNumber);
 	}
 	void NextMenuRun(string selectedParam) {
-		InfoMenu::Run("OK");
+		StudentsOptionSelectionMenu option{};
+		option.Run();
+
 	}
-	List<string>& ParseParams(string object) {
+	List<string>& ParseParams() {
 		return *GetNewObjectParamsWithExtraParams(currentPath, object);
 	}
 };
 
-class InstituteSelectionMenu : public virtual MainChooseMenu {
+class InstituteSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	InstituteSelectionMenu() {
 		object = "institute";
 	}
 private:
+	void OnCreate(string createdObject) {
+		MakeDirectory(currentPath + "\\" + createdObject);
+	}
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from DB", identicalButtonsNumber);
 	}
@@ -249,8 +237,7 @@ private:
 		RestoreCurrentPath();
 	}
 
-	List<string>& ParseParams(string object) {
+	List<string>& ParseParams() {
 		return *GetNewObjectParamsWithExtraParams(currentPath, object);
 	}
 };
-
