@@ -21,7 +21,7 @@ public:
 		for (int i = 0; i < 9; ++i) {
 			for (int j = 0; j < 10; ++j) {
 				marks[i][j] = 0;
-				strcpy(subjectNames[i][j], "");
+				strcpy_s(subjectNames[i][j], "");
 			}
 		}
 	}
@@ -30,49 +30,49 @@ public:
 		return name;
 	}
 	void SetName(string name_) {
-		strcpy(name, name_.c_str());
+		strcpy_s(name, name_.c_str());
 	}
 
 	string GetSurname() {
 		return surname;
 	}
 	void SetSurname(string surname_) {
-		strcpy(surname, surname_.c_str());
+		strcpy_s(surname, surname_.c_str());
 	}
 
 	string GetPatronymic() {
 		return patronymic;
 	}
 	void SetPatronymic(string patronymic_) {
-		strcpy(patronymic, patronymic_.c_str());
+		strcpy_s(patronymic, patronymic_.c_str());
 	}
 
 	string GetInstitute() {
 		return institute;
 	}
 	void SetInstitute(string institute_) {
-		strcpy(institute, institute_.c_str());
+		strcpy_s(institute, institute_.c_str());
 	}
 
 	string GetDepartment() {
 		return department;
 	}
 	void SetDepartment(string department_) {
-		strcpy(department, department_.c_str());
+		strcpy_s(department, department_.c_str());
 	}
 
 	string GetGroup() {
 		return group;
 	}
 	void SetGroup(string group_) {
-		strcpy(group, group_.c_str());
+		strcpy_s(group, group_.c_str());
 	}
 
 	string GetRecordBookNumber() {
 		return recordBookNumber;
 	}
 	void SetRecordBookNumber(string recordBookNumber_) {
-		strcpy(recordBookNumber, recordBookNumber_.c_str());
+		strcpy_s(recordBookNumber, recordBookNumber_.c_str());
 	}
 
 	string GetGender() {
@@ -80,7 +80,7 @@ public:
 	}
 
 	void SetGender(string gender_) {
-		strcpy(gender, gender_.c_str());
+		strcpy_s(gender, gender_.c_str());
 	}
 
 	int GetAdmissionYear() {
@@ -115,7 +115,7 @@ public:
 	void DeleteSubject(int semesterNumber_, string subjectName) {
 		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
 			if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
-				strcpy(subjectNames[semesterNumber_][i], "");
+				strcpy_s(subjectNames[semesterNumber_][i], "");
 				marks[semesterNumber_][i] = 0;
 			}
 		}
@@ -142,7 +142,7 @@ public:
 		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
 			if (marks[semesterNumber_][i] == 0) {
 				marks[semesterNumber_][i] = mark;
-				strcpy(subjectNames[semesterNumber_][i], subjectName.c_str());
+				strcpy_s(subjectNames[semesterNumber_][i], subjectName.c_str());
 				break;
 			}
 		}

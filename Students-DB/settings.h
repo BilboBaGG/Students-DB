@@ -1,5 +1,9 @@
 ﻿#pragma once
 
+#pragma warning(suppress : 4996)
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#define _CRT_SECURE_NO_WARNIGNS
+
 // Consts
 #define SEMESTERS_NUMBER 9
 #define SUBJECTS_NUMBER 10

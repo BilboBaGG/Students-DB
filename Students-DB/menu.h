@@ -8,13 +8,14 @@ string currentPath = ".\\Students";
 #include "printers.h"
 #include "directory_functions.h"
 #include "object_functions.h"
+#include "menu_models.h"
+
 
 class InputMenu {
 public:
 	static string Run(string message, string iString) {
 		string inputString = iString;
 		int key = 0;
-		bool reload = true;
 		system(CLEAR_COMMAND);
 		PrintOneParam(message + inputString);
 		while (true) {
@@ -44,6 +45,74 @@ public:
 	}
 };
 
+class SelectParamMenu : public virtual ReturnMenuModel {
+protected:
+	string object = "";
+	string header = "";
+	List<string>& backupParams = GetClearList();
+	List<string>& params = GetClearList();
+
+	int selectedOption = 0;
+private:
+	virtual List<string>& ParseParams() = 0;
+
+	void ResetParams() {
+		backupParams = ParseParams();
+		params = ParseParams();
+		params[0] = GREEN + params[0] + RESET;
+		selectedOption = 0;
+	}
+
+	void StartFunction() {
+		ResetParams();
+	}
+
+	void InerationPrinter() {
+		PrintParams(params, backupParams, header);
+	}
+
+	string OnEsc() {
+		delete& backupParams;
+		delete& params;
+		return ESCAPE_STRING;
+	}
+
+	void OnDownArrow() {
+		params[selectedOption] = backupParams[selectedOption];
+		selectedOption += 1;
+		selectedOption %= backupParams.Length();
+		params[selectedOption] = GREEN + params[selectedOption] + RESET;
+	}
+
+	void OnUpArrow() {
+		params[selectedOption] = backupParams[selectedOption];
+		if (selectedOption == 0) {
+			selectedOption = backupParams.Length() - 1;
+		}
+		else {
+			selectedOption -= 1;
+			selectedOption %= backupParams.Length();
+		}
+		params[selectedOption] = GREEN + params[selectedOption] + RESET;
+	}
+
+	string OnEnter() {
+		return backupParams[selectedOption];
+	}
+};
+
+class SelectDelParam : public virtual SelectParamMenu {
+public:
+	SelectDelParam(string object_, string header_) {
+		object = object_;
+		header = header_;
+	}
+private:
+	List<string>& ParseParams() {
+		return *GetNewObjectParams();
+	}
+};
+
 class InfoMenu {
 public:
 	static void Run(string message) {
@@ -59,121 +128,6 @@ public:
 	}
 };
 
-class SelectParamMenu {
-public:
-	static string Run(string object, string header) {
-
-		int selectedOption = 0;
-		int pressedKey = 0;
-
-		List<string>& backupParams = GetNewObjectParams(currentPath);
-		List<string>& params = GetNewObjectParams(currentPath);
-
-		params[0] = GREEN + params[0] + RESET;
-
-		while (true) {
-			system(CLEAR_COMMAND);
-
-			PrintParams(params, backupParams, header);
-			Sleep(SLEEP);
-
-			pressedKey = _getch();
-
-			switch (pressedKey) {
-
-			case ESC:
-				system(CLEAR_COMMAND);
-
-				delete& backupParams;
-				delete& params;
-
-				return ESCAPE_STRING;
-			case ARROW_DOWN:
-				params[selectedOption] = backupParams[selectedOption];
-				selectedOption += 1;
-				selectedOption %= backupParams.Length();
-				params[selectedOption] = GREEN + params[selectedOption] + RESET; 
-				break;
-			case ARROW_UP:
-				params[selectedOption] = backupParams[selectedOption];
-				if (selectedOption == 0) {
-					selectedOption = backupParams.Length() - 1;
-				}
-				else {
-					selectedOption -= 1;
-					selectedOption %= backupParams.Length();
-				}
-				params[selectedOption] = GREEN + params[selectedOption] + RESET;
-				break;
-			case ENTER:
-
-				string selectedObject = backupParams[selectedOption];
-				
-				return selectedObject;
-				break;
-			}
-
-		}
-	}
-};
-
-class MenuModel {
-private:
-	int pressedKey = 0;
-	bool isExit = false;
-
-	void virtual Printer() {}
-	void virtual StartFunction() {}
-
-	void virtual OnDownArrow() {}
-	void virtual OnUpArrow() {}
-	void virtual OnEnter() {}
-	void virtual DefaultKeyPressed(int pressedKey) {}
-
-	virtual void ExitFunction() {}
-
-public:
-	void Run() {
-
-		StartFunction();
-
-		while (true) {
-			system(CLEAR_COMMAND);
-
-			Printer();
-			Sleep(SLEEP);
-
-			pressedKey = _getch();
-
-			switch (pressedKey) {
-
-			case ESC:
-				isExit = true;
-				break;
-			case ARROW_DOWN:
-				OnDownArrow();
-				break;
-			case ARROW_UP:
-				OnUpArrow();
-				break;
-			case ENTER:
-				OnEnter();
-				break;
-
-			default:
-				DefaultKeyPressed(pressedKey);
-			}
-
-			if (isExit) {
-				system(CLEAR_COMMAND);
-				ExitFunction();
-				break;
-			}
-		}
-	}
-};
-
-
 class MainChooseMenu : public virtual MenuModel {
 protected:
 	string object = "";
@@ -184,17 +138,12 @@ protected:
 	int selectedOption = 0;
 
 private:
-
-	void SetSelecetdOption(int selectedOption_) {
-		selectedOption = selectedOption_;
-	}
-
-	virtual List<string>& ParseParams(string currentPath, string object) = 0;
+	virtual List<string>& ParseParams(string object) = 0;
 	virtual void NextMenuRun(string selectedParam) = 0;
 
 	void ResetParams() {
-		backupParams = ParseParams(currentPath, object);
-		params = ParseParams(currentPath, object);
+		backupParams = ParseParams(object);
+		params = ParseParams(object);
 		params[0] = GREEN + params[0] + RESET;
 		selectedOption = 0;
 
@@ -246,7 +195,9 @@ private:
 			}
 			else {
 				if (identicalButtonsNumber > 0) {
-					string selectedObject = SelectParamMenu::Run(object, "Select " + object + " to delete");
+					SelectDelParam delMenu = SelectDelParam(object, "Select " + object + " to delete");
+					string selectedObject = delMenu.Run();
+					//string selectedObject = SelectParamMenu::Run(object, "Select " + object + " to delete");
 					if (selectedObject != ESCAPE_STRING) {
 						DeleteDirectory(currentPath + "\\" + selectedObject);
 
@@ -277,7 +228,7 @@ private:
 	void NextMenuRun(string selectedParam) {
 		InfoMenu::Run("OK");
 	}
-	List<string>& ParseParams(string currentPath, string object) {
+	List<string>& ParseParams(string object) {
 		return *GetNewObjectParamsWithExtraParams(currentPath, object);
 	}
 };
@@ -298,7 +249,7 @@ private:
 		RestoreCurrentPath();
 	}
 
-	List<string>& ParseParams(string currentPath, string object) {
+	List<string>& ParseParams(string object) {
 		return *GetNewObjectParamsWithExtraParams(currentPath, object);
 	}
 };

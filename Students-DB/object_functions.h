@@ -9,10 +9,10 @@ List<string>* GetNewObjectParamsWithExtraParams(string currentPath, string objec
 	return params;
 }
 
-List<string>& GetNewObjectParams(string currentPath) {
+List<string>* GetNewObjectParams() {
     List<string>* params = GetObjectsFromDir(currentPath);
 
-    return *params;
+    return params;
 }
 
 void RestoreCurrentPath() {
