@@ -15,13 +15,12 @@ using namespace std;
 int main() {
 	InstituteSelectionMenu startMenu;
 	startMenu.Run();
-	
 
 	/*Student misha;
 	misha.SetName("Mikhail");
 	misha.SetSurname("Kobyak");
 	misha.SetPatronymic("Evgenyevich");
-	misha.SetGroup("BISO-01-22");
+	misha.SetGroup("BISO-01 22");
 	misha.SetInstitute("IKB");
 	misha.SetRecordBookNumber(string(8, 'h'));
 	Date date = { 10, 1110, 22 };
@@ -35,7 +34,7 @@ int main() {
 
 	Write(misha);
 
-	Student kolobok = Read("./Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin");
+	Student kolobok = Read("./Students/IKB/BISO-01 22/Kobyak_Mikhail Evgenyevich.bin");
 
 	kolobok.DeleteSubject(0, "Math");
 

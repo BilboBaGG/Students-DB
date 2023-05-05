@@ -35,9 +35,33 @@ void RestoreCurrentPath() {
     currentPath = newCurrentPath;
 }
 
+string GetInstitute() {
+    stringstream ss(currentPath);
+    string temp, instituteString = "", object;
+
+    for (int j = 0; j < 2; ++j) {
+        getline(ss, temp, '\\');
+    }
+    getline(ss, instituteString, '\\');
+
+    return instituteString;
+}
+
+string GetGroup() {
+    stringstream ss(currentPath);
+    string temp, groupString = "", object;
+
+    for (int j = 0; j < 3; ++j) {
+        getline(ss, temp, '\\');
+    }
+    getline(ss, groupString,'\\');
+
+    return groupString;
+}
+
 string GetLastParam() {
     stringstream ss(currentPath);
-    string temp, newCurrentPath = "", object;
+    string temp, lastParam = "", object;
 
     int countSlashes = 0;
     for (int j = 0; j < currentPath.length(); ++j) {
@@ -49,9 +73,9 @@ string GetLastParam() {
     for (int j = 0; j < countSlashes; ++j) {
         getline(ss, temp, '\\');
     }
-    getline(ss, newCurrentPath);
+    getline(ss, lastParam);
 
-    return newCurrentPath;
+    return lastParam;
 }
 
 

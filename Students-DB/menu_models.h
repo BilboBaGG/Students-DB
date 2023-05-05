@@ -128,7 +128,6 @@ protected:
 	int selectedOption = 0;
 
 	virtual List<string>& ParseParams() { return GetClearList(); }
-	virtual void NextMenuRun(string selectedParam) = 0;
 	virtual string InputMenu() { return ""; }
 
 	void ResetParams() {

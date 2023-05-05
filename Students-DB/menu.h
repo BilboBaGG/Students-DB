@@ -128,11 +128,10 @@ public:
 	}
 };
 
-class StudentsOptionSelectionMenu : public virtual MainChooseMenu {
+class StudentsOptionsSelectionMenu : public virtual MainChooseMenu {
 public:
-	StudentsOptionSelectionMenu() {
+	StudentsOptionsSelectionMenu() {
 		object = "option";
-
 	}
 private:
 	string header = "Select option to view students";
@@ -142,18 +141,50 @@ private:
 		clearParams->Append("Divide students by grades (Variant 73)");
 		return *clearParams;
 	}
-	void NextMenuRun(string selectedParam) {}
 	void Printer() {
 		PrintParams(params, backupParams, header);
 	}
-
+	virtual void OnEnter() {
+		if (selectedOption == 0) {
+			InfoMenu::Run("Doesen't work now!");
+		}
+	}
 };
 
 class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
 protected:
 	virtual List<string>& ParseParams() { return GetClearList(); }
-	virtual void OnCreate(string createdObject) {}
-	virtual void OnDelete(string createdObject) {}
+	virtual void NextMenuRun(string selectedParam) = 0;
+	virtual void OnCreate() { // Default (we can make custom)
+		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
+
+		// Need to create validation
+
+		if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
+			MakeDirectory(currentPath + "\\" + createdObject);
+
+			ResetParams();
+
+			InfoMenu::Run("Successfully added " + object + "!");
+		}
+	}
+	virtual void OnDelete() { // Default (we can make custom)
+		if (identicalButtonsNumber > 0) {
+			SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
+			string selectedObject = delMenu.Run();
+
+			if (selectedObject != ESCAPE_STRING) {
+				DeleteDirectory(currentPath + "\\" + selectedObject);
+
+				ResetParams();
+
+				InfoMenu::Run("Successfully deleted " + object + "!");
+			}
+		}
+		else {
+			InfoMenu::Run("Nothing to delete!");
+		}
+	}
 
 	void OnEnter() {
 		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
@@ -161,41 +192,17 @@ protected:
 		}
 		else {
 			if (IsAdditionMenu(selectedOption, identicalButtonsNumber)) {
-				string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
-
-				// Need to create validation
-
-				if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
-					OnCreate(createdObject);
-
-					ResetParams();
-
-					InfoMenu::Run("Successfully added " + object + "!");
-				}
+				OnCreate();
 			}
 			else {
-				if (identicalButtonsNumber > 0) {
-
-					SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
-					string selectedObject = delMenu.Run();
-
-					if (selectedObject != ESCAPE_STRING) {
-						OnDelete(selectedObject);
-
-						ResetParams();
-
-						InfoMenu::Run("Successfully deleted " + object + "!");
-					}
-				}
-				else {
-					InfoMenu::Run("Nothing to delete!");
-				}
-
+				OnDelete();
 			}
 
 		}
 	}
 };
+
+
 
 class GroupSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
@@ -203,17 +210,11 @@ public:
 		object = "group";
 	}
 private:
-	void OnCreate(string createdObject) {
-		MakeDirectory(currentPath + "\\" + createdObject);
-	}
-	void OnDelete(string deletedObject) {
-		DeleteDirectory(currentPath + "\\" + deletedObject);
-	}
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetLastParam(), identicalButtonsNumber);
 	}
 	void NextMenuRun(string selectedParam) {
-		StudentsOptionSelectionMenu option{};
+		StudentsOptionsSelectionMenu option{};
 		option.Run();
 
 	}
@@ -222,18 +223,14 @@ private:
 	}
 };
 
+
+
 class InstituteSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	InstituteSelectionMenu() {
 		object = "institute";
 	}
 private:
-	void OnCreate(string createdObject) {
-		MakeDirectory(currentPath + "\\" + createdObject);
-	}
-	void OnDelete(string deletedObject) {
-		DeleteDirectory(currentPath + "\\" + deletedObject);
-	}
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from DB", identicalButtonsNumber);
 	}
