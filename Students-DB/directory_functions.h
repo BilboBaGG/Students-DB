@@ -47,16 +47,16 @@ List<string>* GetObjectsFromDir(string path) {
 }
 
 void MakeDirectory(string dirName) {
-    string mkdirCommand = "mkdir " + dirName;
+    string mkdirCommand = "mkdir \"" + dirName+"\"";
     system(mkdirCommand.c_str());
 }
 
 void DeleteDirectory(string dirName) {
-    string rmdirCommand = "rmdir /s /q " + dirName;
+    string rmdirCommand = "rmdir /s /q \"" + dirName + "\"";
     system(rmdirCommand.c_str());
 }
 
 void DeleteStudentFile(string fileName) {
-    string rmFileCommand = "del " + fileName;
+    string rmFileCommand = "del \"" + fileName +"\"";
     system(rmFileCommand.c_str());
 }

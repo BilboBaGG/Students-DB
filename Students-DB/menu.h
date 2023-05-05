@@ -35,7 +35,7 @@ public:
 				}
 				break;
 			default:
-				if (inputString.length() <= maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0')) {
+				if (inputString.length() <= maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ')) {
 					inputString += string(1, key);
 					AddNewLetter(key);
 					break;
@@ -45,7 +45,7 @@ public:
 	}
 };
 
-class SelectParamMenu : public virtual ReturnMenuModel {
+class SelectParamMenuReturnModel : public virtual ReturnMenuModel {
 protected:
 	string object = "";
 	string header = "";
@@ -101,7 +101,7 @@ private:
 	}
 };
 
-class SelectParam : public virtual SelectParamMenu {
+class SelectParam : public virtual SelectParamMenuReturnModel {
 public:
 	SelectParam(string object_, string header_) {
 		object = object_;
@@ -153,6 +153,7 @@ class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
 protected:
 	virtual List<string>& ParseParams() { return GetClearList(); }
 	virtual void OnCreate(string createdObject) {}
+	virtual void OnDelete(string createdObject) {}
 
 	void OnEnter() {
 		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
@@ -179,7 +180,7 @@ protected:
 					string selectedObject = delMenu.Run();
 
 					if (selectedObject != ESCAPE_STRING) {
-						DeleteDirectory(currentPath + "\\" + selectedObject);
+						OnDelete(selectedObject);
 
 						ResetParams();
 
@@ -205,6 +206,9 @@ private:
 	void OnCreate(string createdObject) {
 		MakeDirectory(currentPath + "\\" + createdObject);
 	}
+	void OnDelete(string deletedObject) {
+		DeleteDirectory(currentPath + "\\" + deletedObject);
+	}
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetLastParam(), identicalButtonsNumber);
 	}
@@ -226,6 +230,9 @@ public:
 private:
 	void OnCreate(string createdObject) {
 		MakeDirectory(currentPath + "\\" + createdObject);
+	}
+	void OnDelete(string deletedObject) {
+		DeleteDirectory(currentPath + "\\" + deletedObject);
 	}
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from DB", identicalButtonsNumber);
