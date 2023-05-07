@@ -49,8 +49,8 @@ class SelectParamMenuReturnModel : public virtual ReturnMenuModel {
 protected:
 	string object = "";
 	string header = "";
-	List<string>& backupParams = GetClearList();
-	List<string>& params = GetClearList();
+	List<string>& backupParams = *GetClearList();
+	List<string>& params = *GetClearList();
 
 	int selectedOption = 0;
 private:
@@ -148,43 +148,18 @@ private:
 		if (selectedOption == 0) {
 			InfoMenu::Run("Doesen't work now!");
 		}
+		else {
+			InfoMenu::Run("Doesen't work now!");
+		}
 	}
 };
 
 class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
 protected:
-	virtual List<string>& ParseParams() { return GetClearList(); }
+	virtual List<string>& ParseParams() { return *GetClearList(); }
 	virtual void NextMenuRun(string selectedParam) = 0;
-	virtual void OnCreate() { // Default (we can make custom)
-		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
-
-		// Need to create validation
-
-		if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
-			MakeDirectory(currentPath + "\\" + createdObject);
-
-			ResetParams();
-
-			InfoMenu::Run("Successfully added " + object + "!");
-		}
-	}
-	virtual void OnDelete() { // Default (we can make custom)
-		if (identicalButtonsNumber > 0) {
-			SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
-			string selectedObject = delMenu.Run();
-
-			if (selectedObject != ESCAPE_STRING) {
-				DeleteDirectory(currentPath + "\\" + selectedObject);
-
-				ResetParams();
-
-				InfoMenu::Run("Successfully deleted " + object + "!");
-			}
-		}
-		else {
-			InfoMenu::Run("Nothing to delete!");
-		}
-	}
+	virtual void OnCreate() {}
+	virtual void OnDelete() {}
 
 	void OnEnter() {
 		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
@@ -219,7 +194,37 @@ private:
 
 	}
 	List<string>& ParseParams() {
-		return *GetNewObjectParamsWithExtraParams(currentPath, object);
+		return *GetNewDirParamsWithExtraParams(currentPath, object);
+	}
+	void OnCreate() { // Default (we can make custom)
+		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
+
+		// Need to create validation
+
+		if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
+			MakeDirectory(currentPath + "\\" + createdObject);
+
+			ResetParams();
+
+			InfoMenu::Run("Successfully added " + object + "!");
+		}
+	}
+	void OnDelete() { // Default (we can make custom)
+		if (identicalButtonsNumber > 0) {
+			SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
+			string selectedObject = delMenu.Run();
+
+			if (selectedObject != ESCAPE_STRING) {
+				DeleteDirectory(currentPath + "\\" + selectedObject);
+
+				ResetParams();
+
+				InfoMenu::Run("Successfully deleted " + object + "!");
+			}
+		}
+		else {
+			InfoMenu::Run("Nothing to delete!");
+		}
 	}
 };
 
@@ -242,6 +247,35 @@ private:
 	}
 
 	List<string>& ParseParams() {
-		return *GetNewObjectParamsWithExtraParams(currentPath, object);
+		return *GetNewDirParamsWithExtraParams(currentPath, object);
+	}
+	void OnCreate() { // Default (we can make custom)
+		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
+
+		// Need to create validation
+
+		if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
+			MakeDirectory(currentPath + "\\" + createdObject);
+
+			ResetParams();
+
+			InfoMenu::Run("Successfully added " + object + "!");
+		}
+	}
+	void OnDelete() { // Default (we can make custom)
+		if (identicalButtonsNumber > 0) {
+			SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
+			string selectedObject = delMenu.Run();
+			if (selectedObject != ESCAPE_STRING) {
+				DeleteDirectory(currentPath + "\\" + selectedObject);
+
+				ResetParams();
+
+				InfoMenu::Run("Successfully deleted " + object + "!");
+			}
+		}
+		else {
+			InfoMenu::Run("Nothing to delete!");
+		}
 	}
 };

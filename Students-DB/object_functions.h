@@ -1,12 +1,21 @@
 #pragma once
 
-List<string>* GetNewObjectParamsWithExtraParams(string currentPath, string object) {
+List<string>* GetNewDirParamsWithExtraParams(string currentPath, string object) {
 	List<string>* params = GetObjectsFromDir(currentPath);
 
 	params->Append("Create new " + object);
 	params->Append("Delete " + object);
 
 	return params;
+}
+
+List<string>* GetNewFileParsedParamsWithExtraParams(string currentPath, string object) {
+    List<string>* params = GetParsedStudentsFromDir(currentPath);
+
+    params->Append("Create new " + object);
+    params->Append("Delete " + object);
+
+    return params;
 }
 
 List<string>* GetNewObjectParams() {
@@ -78,6 +87,19 @@ string GetLastParam() {
     return lastParam;
 }
 
+string GetFilenameFromParsedStudent(string parsedStudent) {
+    stringstream ss(parsedStudent);
+    string filename, tempString;
+    getline(ss, tempString, ' ');
+    filename += tempString + "_";
+    getline(ss, tempString, ' ');
+    filename += tempString + "_";
+    getline(ss, tempString);
+    filename += tempString + ".bin"; // .enc
+
+
+    return filename;
+}
 
 bool IsAdditionMenu(int selectedOption, int identicalButtonsNumber) {
     return selectedOption == identicalButtonsNumber;
@@ -90,7 +112,7 @@ bool IsObjectExists() {
     return true;
 }
 
-List<string>& GetClearList() {
+List<string>* GetClearList() {
     List<string>* temp = new List<string>();
-    return *temp;
+    return temp;
 }

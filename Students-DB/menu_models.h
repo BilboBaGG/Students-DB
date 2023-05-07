@@ -110,8 +110,6 @@ public:
 			}
 
 			if (isExit) {
-				system(CLEAR_COMMAND);
-				ExitFunction();
 				break;
 			}
 		}
@@ -121,13 +119,13 @@ public:
 class MainChooseMenu : public virtual MenuModel {
 protected:
 	string object = "";
-	List<string>& backupParams = GetClearList();
-	List<string>& params = GetClearList();
+	List<string>& backupParams = *GetClearList();
+	List<string>& params = *GetClearList();
 
 	int identicalButtonsNumber = 0;
 	int selectedOption = 0;
 
-	virtual List<string>& ParseParams() { return GetClearList(); }
+	virtual List<string>& ParseParams() { return *GetClearList(); }
 	virtual string InputMenu() { return ""; }
 
 	void ResetParams() {
@@ -164,7 +162,7 @@ protected:
 		params[selectedOption] = GREEN + params[selectedOption] + RESET;
 	}
 
-	virtual void OnEnter() {}
+	virtual void OnEnter() = 0;
 
 	void ExitFunction() {
 		delete& backupParams;

@@ -38,12 +38,53 @@ List<string>* GetObjectsFromDir(string path) {
             getline(ss, temp, '\\');
         }
 
-        getline(ss, object); // Institute 
+        getline(ss, object);
         parsedFiles->Append(object);
     }
 
     delete files;
     return parsedFiles;
+}
+
+
+List<string>* GetParsedStudentsFromDir(string path) {
+    List<string>* files = GetObjectsFromDir(path);
+    List<string>* students = new List<string>;
+
+    for (int i = 0; i < files->Length(); ++i) {
+        stringstream ss(files->Get(i));
+        string studentString, studentParsedString = "";
+
+        getline(ss, studentString, '_');
+        studentParsedString += studentString + " ";
+
+        getline(ss, studentString, '_');
+        studentParsedString += studentString + " ";
+
+        getline(ss, studentString, '.');
+        studentParsedString += studentString;
+
+
+        students->Append(studentParsedString);
+    }
+    delete files;
+
+    return students;
+}
+
+List<string>* GetStudentsFromDir(string path) {
+    List<string>* files = GetObjectsFromDir(path);
+    List<string>* students = new List<string>;
+
+    for (int i = 0; i < files->Length(); ++i) {
+        stringstream ss(files->Get(i));
+        string studentString;
+        getline(ss, studentString, '.');
+        students->Append(studentString);
+    }
+    delete files;
+
+    return students;
 }
 
 void MakeDirectory(string dirName) {
