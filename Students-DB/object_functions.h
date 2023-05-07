@@ -68,25 +68,6 @@ string GetGroup() {
     return groupString;
 }
 
-string GetLastParam() {
-    stringstream ss(currentPath);
-    string temp, lastParam = "", object;
-
-    int countSlashes = 0;
-    for (int j = 0; j < currentPath.length(); ++j) {
-        if (currentPath[j] == '\\') {
-            countSlashes += 1;
-        }
-    }
-
-    for (int j = 0; j < countSlashes; ++j) {
-        getline(ss, temp, '\\');
-    }
-    getline(ss, lastParam);
-
-    return lastParam;
-}
-
 string GetFilenameFromParsedStudent(string parsedStudent) {
     stringstream ss(parsedStudent);
     string filename, tempString;

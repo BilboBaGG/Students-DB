@@ -47,7 +47,7 @@ List<string>* GetObjectsFromDir(string path) {
 }
 
 
-List<string>* GetParsedStudentsFromDir(string path) {
+List<string>* GetParsedStudentsFromDir(string path) { // ???
     List<string>* files = GetObjectsFromDir(path);
     List<string>* students = new List<string>;
 
@@ -72,20 +72,28 @@ List<string>* GetParsedStudentsFromDir(string path) {
     return students;
 }
 
-List<string>* GetStudentsFromDir(string path) {
-    List<string>* files = GetObjectsFromDir(path);
-    List<string>* students = new List<string>;
+//List<string>* GetStudentsFromDir(string path) { 
+//    List<string>* files = GetObjectsFromDir(path);
+//    List<string>* students = new List<string>;
+//
+//    for (int i = 0; i < files->Length(); ++i) {
+//        stringstream ss(files->Get(i));
+//        string studentString;
+//        getline(ss, studentString, '.');
+//        students->Append(studentString);
+//    }
+//    delete files;
+//
+//    return students;
+//}
 
-    for (int i = 0; i < files->Length(); ++i) {
-        stringstream ss(files->Get(i));
-        string studentString;
-        getline(ss, studentString, '.');
-        students->Append(studentString);
-    }
-    delete files;
-
-    return students;
+List<string>* GetParsedStudentsFromDirWithExtraButtons(string path, string object) {
+    List<string>* studentParams = GetParsedStudentsFromDir(path);
+    studentParams->Append("Create new " + object);
+    studentParams->Append("Delete " + object);
+    return studentParams;
 }
+
 
 void MakeDirectory(string dirName) {
     string mkdirCommand = "mkdir \"" + dirName+"\"";

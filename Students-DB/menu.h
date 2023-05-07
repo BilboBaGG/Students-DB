@@ -101,9 +101,9 @@ private:
 	}
 };
 
-class SelectParam : public virtual SelectParamMenuReturnModel {
+class SelectDirParam : public virtual SelectParamMenuReturnModel {
 public:
-	SelectParam(string object_, string header_) {
+	SelectDirParam(string object_, string header_) {
 		object = object_;
 		header = header_;
 	}
@@ -128,36 +128,10 @@ public:
 	}
 };
 
-class StudentsOptionsSelectionMenu : public virtual MainChooseMenu {
-public:
-	StudentsOptionsSelectionMenu() {
-		object = "option";
-	}
-private:
-	string header = "Select option to view students";
-	List<string>& ParseParams() {
-		List<string>* clearParams = new List<string>;
-		clearParams->Append("Print all students");
-		clearParams->Append("Divide students by grades (Variant 73)");
-		return *clearParams;
-	}
-	void Printer() {
-		PrintParams(params, backupParams, header);
-	}
-	virtual void OnEnter() {
-		if (selectedOption == 0) {
-			InfoMenu::Run("Doesen't work now!");
-		}
-		else {
-			InfoMenu::Run("Doesen't work now!");
-		}
-	}
-};
-
 class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
 protected:
 	virtual List<string>& ParseParams() { return *GetClearList(); }
-	virtual void NextMenuRun(string selectedParam) = 0;
+	virtual void NextMenuRun(string selectedParam) {}
 	virtual void OnCreate() {}
 	virtual void OnDelete() {}
 
@@ -177,6 +151,46 @@ protected:
 	}
 };
 
+class StudentSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
+public:
+	StudentSelectionMenu() {
+		object = "student";
+	}
+	void Printer() {
+		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetGroup(), identicalButtonsNumber);
+	}
+	List<string>& ParseParams() {
+		return *GetParsedStudentsFromDirWithExtraButtons(currentPath, object);
+	}
+private:
+};
+
+class StudentsOptionsSelectionMenu : public virtual MainChooseMenu {
+public:
+	StudentsOptionsSelectionMenu() {
+		object = "option";
+	}
+private:
+	string header = "Select option to view students";
+	List<string>& ParseParams() {
+		List<string>* clearParams = new List<string>;
+		clearParams->Append("Print all students");
+		clearParams->Append("Divide students by grades (Variant 73)");
+		return *clearParams;
+	}
+	void Printer() {
+		PrintParams(params, backupParams, header);
+	}
+	virtual void OnEnter() {
+		if (selectedOption == 0) {
+			StudentSelectionMenu student;
+			student.Run();
+		}
+		else {
+			InfoMenu::Run("Doesen't work now!");
+		}
+	}
+};
 
 
 class GroupSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
@@ -186,17 +200,19 @@ public:
 	}
 private:
 	void Printer() {
-		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetLastParam(), identicalButtonsNumber);
+		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetInstitute(), identicalButtonsNumber);
 	}
 	void NextMenuRun(string selectedParam) {
+		currentPath += "\\" + selectedParam;
 		StudentsOptionsSelectionMenu option{};
 		option.Run();
+		RestoreCurrentPath();
 
 	}
 	List<string>& ParseParams() {
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
-	void OnCreate() { // Default (we can make custom)
+	void OnCreate() { 
 		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
 
 		// Need to create validation
@@ -209,9 +225,9 @@ private:
 			InfoMenu::Run("Successfully added " + object + "!");
 		}
 	}
-	void OnDelete() { // Default (we can make custom)
+	void OnDelete() { 
 		if (identicalButtonsNumber > 0) {
-			SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
+			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();
 
 			if (selectedObject != ESCAPE_STRING) {
@@ -264,7 +280,7 @@ private:
 	}
 	void OnDelete() { // Default (we can make custom)
 		if (identicalButtonsNumber > 0) {
-			SelectParam delMenu = SelectParam(object, "Select " + object + " to delete");
+			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();
 			if (selectedObject != ESCAPE_STRING) {
 				DeleteDirectory(currentPath + "\\" + selectedObject);
