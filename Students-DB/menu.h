@@ -45,62 +45,6 @@ public:
 	}
 };
 
-class SelectParamMenuReturnModel : public virtual ReturnMenuModel {
-protected:
-	string object = "";
-	string header = "";
-	List<string>& backupParams = *GetClearList();
-	List<string>& params = *GetClearList();
-
-	int selectedOption = 0;
-private:
-	virtual List<string>& ParseParams() = 0;
-
-	void ResetParams() {
-		backupParams = ParseParams();
-		params = ParseParams();
-		params[0] = GREEN + params[0] + RESET;
-		selectedOption = 0;
-	}
-
-	virtual void StartFunction() {
-		ResetParams();
-	}
-
-	void InerationPrinter() {
-		PrintParams(params, backupParams, header);
-	}
-
-	string OnEsc() {
-		delete& backupParams;
-		delete& params;
-		return ESCAPE_STRING;
-	}
-
-	void OnDownArrow() {
-		params[selectedOption] = backupParams[selectedOption];
-		selectedOption += 1;
-		selectedOption %= backupParams.Length();
-		params[selectedOption] = GREEN + params[selectedOption] + RESET;
-	}
-
-	void OnUpArrow() {
-		params[selectedOption] = backupParams[selectedOption];
-		if (selectedOption == 0) {
-			selectedOption = backupParams.Length() - 1;
-		}
-		else {
-			selectedOption -= 1;
-			selectedOption %= backupParams.Length();
-		}
-		params[selectedOption] = GREEN + params[selectedOption] + RESET;
-	}
-
-	string OnEnter() {
-		return backupParams[selectedOption];
-	}
-};
-
 class SelectDirParam : public virtual SelectParamMenuReturnModel {
 public:
 	SelectDirParam(string object_, string header_) {
@@ -108,7 +52,7 @@ public:
 		header = header_;
 	}
 private:
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		return *GetNewObjectParams();
 	}
 };
@@ -120,7 +64,7 @@ public:
 		header = header_;
 	}
 private:
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		return *GetParsedStudentsFromDir(currentPath);
 	}
 };
@@ -143,11 +87,11 @@ public:
 class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
 protected:
 	virtual List<string>& ParseParams() = 0;
-	virtual void NextMenuRun(string selectedParam) {}
-	virtual void OnCreate() {}
-	virtual void OnDelete() {}
+	virtual void NextMenuRun(string selectedParam) = 0;
+	virtual void OnCreate() = 0;
+	virtual void OnDelete() = 0;
 
-	void OnEnter() {
+	void OnEnter() override {
 		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
 			NextMenuRun(backupParams[selectedOption]);
 		}
@@ -172,14 +116,14 @@ public:
 	}
 private:
 	string header = "Select students's paramenters";
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		return *GetStudentsParams(currentPath, student);
 	}
-	void Printer() {
+	void Printer() override {
 		// PrintStudent
 		PrintStudent(params, backupParams, header);
 	}
-	virtual void OnEnter() {
+	virtual void OnEnter() override {
 		// switch
 	}
 };
@@ -190,21 +134,21 @@ public:
 		object = "student";
 	}
 private:
-	void Printer() {
+	void Printer() override {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetGroup(), identicalButtonsNumber);
 	}
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		return *GetParsedStudentsFromDirWithExtraButtons(currentPath, object);
 	}
 
-	void NextMenuRun(string selectedParam) {
+	void NextMenuRun(string selectedParam) override {
 		currentPath += "\\" + GetFilenameFromParsedStudent(selectedParam);
 		StudentsParamsMenu paramsMenu{};
 		paramsMenu.Run();
 		RestoreCurrentPath();
 	}
 
-	void OnCreate() {
+	void OnCreate() override{
 		string surname = InputMenu::Run("Enter the student's surname: ", "", DEFAULT_STRING_LENGTH - 1);
 		while (surname == "") {
 			surname = InputMenu::Run("Please, enter some surname: ", "", DEFAULT_STRING_LENGTH - 1);
@@ -238,8 +182,7 @@ private:
 		}
 	}
 
-
-	void OnDelete() {
+	void OnDelete() override {
 		if (identicalButtonsNumber > 0) {
 			SelectStudentParam delMenu = SelectStudentParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();
@@ -264,7 +207,7 @@ public:
 	}
 private:
 	string header = "Select option to view students";
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		List<string>* clearParams = new List<string>;
 		clearParams->Append("Print all students");
 		clearParams->Append("Divide students by grades (Variant 73)");
@@ -273,7 +216,7 @@ private:
 	void Printer() {
 		PrintParams(params, backupParams, header);
 	}
-	virtual void OnEnter() {
+	virtual void OnEnter() override {
 		if (selectedOption == 0) {
 			StudentSelectionMenu student;
 			student.Run();
@@ -294,14 +237,14 @@ private:
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetInstitute(), identicalButtonsNumber);
 	}
-	void NextMenuRun(string selectedParam) {
+	void NextMenuRun(string selectedParam) override {
 		currentPath += "\\" + selectedParam;
 		StudentsOptionsSelectionMenu option{};
 		option.Run();
 		RestoreCurrentPath();
 
 	}
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
 	void OnCreate() { 
@@ -325,7 +268,7 @@ private:
 			}
 		}
 	}
-	void OnDelete() { 
+	void OnDelete() override { 
 		if (identicalButtonsNumber > 0) {
 			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();
@@ -352,17 +295,17 @@ public:
 		object = "institute";
 	}
 private:
-	void Printer() {
+	void Printer() override {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from DB", identicalButtonsNumber);
 	}
-	void NextMenuRun(string selectedParam) {
+	void NextMenuRun(string selectedParam) override {
 		currentPath += "\\" + selectedParam;
 		GroupSelectionMenu groupMenu;
 		groupMenu.Run();
 		RestoreCurrentPath();
 	}
 
-	List<string>& ParseParams() {
+	List<string>& ParseParams() override {
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
 	void OnCreate() { // Default (we can make custom)
@@ -386,7 +329,7 @@ private:
 			}
 		}
 	}
-	void OnDelete() { // Default (we can make custom)
+	void OnDelete() override { // Default (we can make custom)
 		if (identicalButtonsNumber > 0) {
 			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();

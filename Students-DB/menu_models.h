@@ -126,8 +126,15 @@ protected:
 	int selectedOption = 0;
 
 	virtual List<string>& ParseParams() { return *GetClearList(); }
+	virtual string InputMenu() { return ""; }
 
 	void ResetParams() {
+		List<string>* tempPointer = &backupParams;
+		delete tempPointer;
+		tempPointer = &params;
+		delete tempPointer;
+
+
 		backupParams = ParseParams();
 		params = ParseParams();
 		params[0] = GREEN + params[0] + RESET;
@@ -166,5 +173,66 @@ protected:
 	void ExitFunction() {
 		delete& backupParams;
 		delete& params;
+	}
+};
+
+class SelectParamMenuReturnModel : public virtual ReturnMenuModel {
+protected:
+	string object = "";
+	string header = "";
+	List<string>& backupParams = *GetClearList();
+	List<string>& params = *GetClearList();
+
+	int selectedOption = 0;
+private:
+	virtual List<string>& ParseParams() = 0;
+
+	void ResetParams() {
+		List<string>* tempPointer = &backupParams;
+		delete tempPointer;
+		tempPointer = &params;
+		delete tempPointer;
+
+		backupParams = ParseParams();
+		params = ParseParams();
+		params[0] = GREEN + params[0] + RESET;
+		selectedOption = 0;
+	}
+
+	virtual void StartFunction() override {
+		ResetParams();
+	}
+
+	void InerationPrinter() override {
+		PrintParams(params, backupParams, header);
+	}
+
+	string OnEsc() {
+		delete& backupParams;
+		delete& params;
+		return ESCAPE_STRING;
+	}
+
+	void OnDownArrow() override {
+		params[selectedOption] = backupParams[selectedOption];
+		selectedOption += 1;
+		selectedOption %= backupParams.Length();
+		params[selectedOption] = GREEN + params[selectedOption] + RESET;
+	}
+
+	void OnUpArrow() override {
+		params[selectedOption] = backupParams[selectedOption];
+		if (selectedOption == 0) {
+			selectedOption = backupParams.Length() - 1;
+		}
+		else {
+			selectedOption -= 1;
+			selectedOption %= backupParams.Length();
+		}
+		params[selectedOption] = GREEN + params[selectedOption] + RESET;
+	}
+
+	string OnEnter() override {
+		return backupParams[selectedOption];
 	}
 };
