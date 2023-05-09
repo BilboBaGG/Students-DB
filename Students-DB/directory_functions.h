@@ -76,6 +76,10 @@ bool IsStudentExists(string student, string path) {
     return (GetParsedStudentsFromDir(path)->Find(student) != -1);
 }
 
+bool IsDirectoryExists(string dir, string path) {
+    return (GetObjectsFromDir(path)->Find(dir) != -1);
+}
+
 //List<string>* GetStudentsFromDir(string path) { 
 //    List<string>* files = GetObjectsFromDir(path);
 //    List<string>* students = new List<string>;

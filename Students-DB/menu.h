@@ -305,16 +305,24 @@ private:
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
 	void OnCreate() { 
-		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
+		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30);
 
-		// Need to create validation
+		while (createdObject.length() == 0) {
+			createdObject = InputMenu::Run("Enter correct " + object + " name : ", "", 30);
+		}
 
-		if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
-			MakeDirectory(currentPath + "\\" + createdObject);
+		if (createdObject != ESCAPE_STRING) {
+			if (!IsDirectoryExists(createdObject, currentPath)) {
+				MakeDirectory(currentPath + "\\" + createdObject);
 
-			ResetParams();
+				ResetParams();
 
-			InfoMenu::Run("Successfully added " + object + "!");
+				InfoMenu::Run("Successfully added " + object + "!");
+
+			}
+			else {
+				InfoMenu::Run("Group already created!");
+			}
 		}
 	}
 	void OnDelete() { 
@@ -358,16 +366,24 @@ private:
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
 	void OnCreate() { // Default (we can make custom)
-		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30).c_str();
+		string createdObject = InputMenu::Run("Enter the name of the new " + object + " : ", "", 30);
 
-		// Need to create validation
+		while (createdObject.length() == 0) {
+			createdObject = InputMenu::Run("Enter correct " + object + " name : ", "", 30);
+		}
 
-		if (createdObject != ESCAPE_STRING && createdObject.length() > 0) {
-			MakeDirectory(currentPath + "\\" + createdObject);
+		if (createdObject != ESCAPE_STRING) {
+			if (!IsDirectoryExists(createdObject, currentPath)) {
+				MakeDirectory(currentPath + "\\" + createdObject);
 
-			ResetParams();
+				ResetParams();
 
-			InfoMenu::Run("Successfully added " + object + "!");
+				InfoMenu::Run("Successfully added " + object + "!");
+
+			}
+			else {
+				InfoMenu::Run("Institute already created!");
+			}
 		}
 	}
 	void OnDelete() { // Default (we can make custom)
