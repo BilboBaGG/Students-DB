@@ -63,7 +63,7 @@ private:
 		selectedOption = 0;
 	}
 
-	void StartFunction() {
+	virtual void StartFunction() {
 		ResetParams();
 	}
 
@@ -113,6 +113,18 @@ private:
 	}
 };
 
+class SelectStudentParam : public virtual SelectParamMenuReturnModel {
+public:
+	SelectStudentParam(string object_, string header_) {
+		object = object_;
+		header = header_;
+	}
+private:
+	List<string>& ParseParams() {
+		return *GetParsedStudentsFromDir(currentPath);
+	}
+};
+
 class InfoMenu {
 public:
 	static void Run(string message) {
@@ -151,18 +163,63 @@ protected:
 	}
 };
 
+class StudentsParamsMenu : public virtual MainChooseMenu{
+public:
+	Student student;
+	StudentsParamsMenu() {
+		object = "students's paramenters";
+		student = Read(currentPath);
+	}
+private:
+	string header = "Select students's paramenters";
+	List<string>& ParseParams() {
+		return *GetStudentsParams(currentPath, student);
+	}
+	void Printer() {
+		// PrintStudent
+		PrintStudent(params, backupParams, header);
+	}
+	virtual void OnEnter() {
+		// switch
+	}
+};
+
 class StudentSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	StudentSelectionMenu() {
 		object = "student";
 	}
+private:
 	void Printer() {
 		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetGroup(), identicalButtonsNumber);
 	}
 	List<string>& ParseParams() {
 		return *GetParsedStudentsFromDirWithExtraButtons(currentPath, object);
 	}
-private:
+
+	void NextMenuRun(string selectedParam) {
+		currentPath += "\\" + GetFilenameFromParsedStudent(selectedParam);
+		StudentsParamsMenu paramsMenu{};
+		paramsMenu.Run();
+		RestoreCurrentPath();
+	}
+
+	void OnDelete() {
+		if (identicalButtonsNumber > 0) {
+			SelectStudentParam delMenu = SelectStudentParam(object, "Select " + object + " to delete");
+			string selectedObject = delMenu.Run();
+			if (selectedObject != ESCAPE_STRING) {
+				DeleteStudentFile(currentPath + "\\" + GetFilenameFromParsedStudent(selectedObject));
+
+				ResetParams();
+
+				InfoMenu::Run("Successfully deleted " + object + "!");
+			}
+		}
+		else {
+			InfoMenu::Run("Nothing to delete!");
+		}
+	}
 };
 
 class StudentsOptionsSelectionMenu : public virtual MainChooseMenu {

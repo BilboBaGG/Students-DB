@@ -33,4 +33,7 @@ public:
 	void SetYear(int year_) {
 		year = year_;
 	}
+	string GetDateInString() {
+		return to_string(day) + "." + to_string(month) + "." + to_string(year);
+	}
 };

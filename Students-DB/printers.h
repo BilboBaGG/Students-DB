@@ -102,3 +102,19 @@ void PrintParamsWithExtraButtons(List<string>& params, List<string>& backupParam
 	}
 	PrintLine();
 }
+
+void PrintStudent(List<string>& params, List<string>& backupParams, string header) {
+	PrintHeader(header);
+	for (int i = 0; i < params.Length(); ++i) {
+		string param = params[i];
+		string backupParam = backupParams[i];
+
+		if (backupParam.length() % 2 == 1) {
+			param += " ";
+			backupParam += " ";
+		}
+
+		cout << "|    " << param << string(LINE_LENGTH - 6 - backupParam.length(), ' ') << "|\n";
+		PrintLine();
+	}
+}

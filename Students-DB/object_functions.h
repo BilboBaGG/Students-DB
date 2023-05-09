@@ -24,6 +24,24 @@ List<string>* GetNewObjectParams() {
     return params;
 }
 
+List<string>* GetStudentsParams(string currentPath, Student& student) {
+    List<string>* params = new List<string>;
+    params->Append("Surname: " + student.GetSurname());
+    params->Append("Name: " + student.GetName());
+    params->Append("Patronymic: " + student.GetPatronymic());
+    params->Append("Institute: " + student.GetInstitute());
+    params->Append("Departament: " + student.GetDepartment());
+    params->Append("Group: " + student.GetGroup());
+    params->Append("RecordBookNumber: " + student.GetRecordBookNumber());
+    params->Append("Gender: " + student.GetGender());
+    params->Append("Admission year: " + to_string(student.GetAdmissionYear()));
+    params->Append("Birthday: " + student.GetBirthday().GetDateInString());
+    params->Append("Marks");
+
+    return params;
+}
+
+
 void RestoreCurrentPath() {
     stringstream ss(currentPath);
     string temp,newCurrentPath = "", object;
