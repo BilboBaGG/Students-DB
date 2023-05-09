@@ -16,23 +16,23 @@ int main() {
 	InstituteSelectionMenu startMenu;
 	startMenu.Run();
 
-	//Student misha;
-	//misha.SetName("Mikhail");
-	//misha.SetSurname("Kobyak");
-	//misha.SetPatronymic("Evgenyavich");
-	//misha.SetGroup("BISO-01-22");
-	//misha.SetInstitute("IKB");
-	//misha.SetRecordBookNumber(string(8, 'h'));
-	//Date date = { 18, 01, 2005 };
+	Student misha;
+	misha.SetName("Mikhail");
+	misha.SetSurname("Kobyak");
+	misha.SetPatronymic("Evgenyavich");
+	misha.SetGroup("BISO-01-22");
+	misha.SetInstitute("IKB");
+	misha.SetRecordBookNumber(string(8, 'h'));
+	Date date = { 18, 01, 2005 };
 
 	//misha.SetBirthday(date);
-	//misha.SetAdmissionYear(1000);
+	misha.SetAdmissionYear(1000);
 
-	//misha.AddMark(0,"Math",5);
-	//misha.AddMark(0,"Russian",5);
-	//misha.AddMark(4, "Latin", 2);
+	misha.AddMark(0,"Math",5);
+	misha.AddMark(0,"Russian",5);
+	misha.AddMark(4, "Latin", 2);
 
-	//Write(misha);
+	Write(misha);
 
 	/*Student kolobok = Read("./Students/IKB/BISO-01-22/Kobyak_Mikhail Evgenyevich.bin");
 

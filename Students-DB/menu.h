@@ -142,7 +142,7 @@ public:
 
 class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
 protected:
-	virtual List<string>& ParseParams() { return *GetClearList(); }
+	virtual List<string>& ParseParams() = 0;
 	virtual void NextMenuRun(string selectedParam) {}
 	virtual void OnCreate() {}
 	virtual void OnDelete() {}
@@ -203,6 +203,41 @@ private:
 		paramsMenu.Run();
 		RestoreCurrentPath();
 	}
+
+	void OnCreate() {
+		string surname = InputMenu::Run("Enter the student's surname: ", "", DEFAULT_STRING_LENGTH - 1);
+		while (surname == "") {
+			surname = InputMenu::Run("Please, enter some surname: ", "", DEFAULT_STRING_LENGTH - 1);
+		}
+		if (surname != ESCAPE_STRING) {
+			string name = InputMenu::Run("Enter the student's name: ", "", DEFAULT_STRING_LENGTH - 1);
+			while (name == "") {
+				name = InputMenu::Run("Please, enter some name: ", "", DEFAULT_STRING_LENGTH - 1);
+			}
+			if (name != ESCAPE_STRING) {
+				string patronymic = InputMenu::Run("Enter the student's patronymic: ", "", DEFAULT_STRING_LENGTH - 1);
+				while (patronymic == "") {
+					patronymic = InputMenu::Run("Please, enter some patronymic: ", "", DEFAULT_STRING_LENGTH - 1);
+				}
+				if (patronymic != ESCAPE_STRING) {
+					if (IsStudentExists(surname + " " + name + " " + patronymic, currentPath)) {
+						InfoMenu::Run("This student is already in the database");
+					} else {
+						Student student;
+						student.SetName(name);
+						student.SetSurname(surname);
+						student.SetPatronymic(patronymic);
+						student.SetGroup(GetGroup());
+						student.SetInstitute(GetInstitute());
+						Write(student);
+						InfoMenu::Run("Student successfully added to the database!");
+						ResetParams();
+					}
+				}
+			}
+		}
+	}
+
 
 	void OnDelete() {
 		if (identicalButtonsNumber > 0) {

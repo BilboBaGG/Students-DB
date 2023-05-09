@@ -47,7 +47,7 @@ List<string>* GetObjectsFromDir(string path) {
 }
 
 
-List<string>* GetParsedStudentsFromDir(string path) { // ???
+List<string>* GetParsedStudentsFromDir(string path) { 
     List<string>* files = GetObjectsFromDir(path);
     List<string>* students = new List<string>;
 
@@ -70,6 +70,10 @@ List<string>* GetParsedStudentsFromDir(string path) { // ???
     delete files;
 
     return students;
+}
+
+bool IsStudentExists(string student, string path) {
+    return (GetParsedStudentsFromDir(path)->Find(student) != -1);
 }
 
 //List<string>* GetStudentsFromDir(string path) { 

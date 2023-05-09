@@ -5,7 +5,7 @@ public:
 	Date() {
 		day = 1;
 		month = 1;
-		year = 1970;
+		year = 0;
 	}
 	Date(int day_, int month_, int year_) {
 		day = day_;
@@ -34,6 +34,12 @@ public:
 		year = year_;
 	}
 	string GetDateInString() {
-		return to_string(day) + "." + to_string(month) + "." + to_string(year);
+		if (year == 0) {
+			return "";
+		} else {
+			string day_ = (day / 10 == 0) ? ("0") : ("");
+			string month_ = (month / 10 == 0) ? ("0") : ("");
+			return day_ + to_string(day) + "." + month_ + to_string(month) + "." + to_string(year);
+		}
 	}
 };
