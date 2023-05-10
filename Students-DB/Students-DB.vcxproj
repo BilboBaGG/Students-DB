@@ -139,6 +139,7 @@
     <ClInclude Include="date.h" />
     <ClInclude Include="directory_functions.h" />
     <ClInclude Include="file_functions.h" />
+    <ClInclude Include="input_menus.h" />
     <ClInclude Include="menu_models.h" />
     <ClInclude Include="object_functions.h" />
     <ClInclude Include="list.h" />

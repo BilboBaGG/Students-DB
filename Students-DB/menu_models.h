@@ -108,10 +108,6 @@ public:
 			default:
 				DefaultKeyPressed(pressedKey);
 			}
-
-			if (isExit) {
-				break;
-			}
 		}
 	}
 };

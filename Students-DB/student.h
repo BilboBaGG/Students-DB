@@ -16,7 +16,7 @@ public:
 	Student() {
 		Date clearDate;
 		birthday = clearDate;
-		admissionYear = 0;
+		admissionYear = -1;
 
 		for (int i = 0; i < 9; ++i) {
 			for (int j = 0; j < 10; ++j) {
@@ -86,6 +86,16 @@ public:
 	int GetAdmissionYear() {
 		return admissionYear;
 	}
+
+	string GetStringAdmissionYear() {
+		if (admissionYear == -1) {
+			return "";
+		}
+		else {
+			return to_string(admissionYear);
+		}
+	}
+
 	void SetAdmissionYear(int admissionYear_) {
 		admissionYear = admissionYear_;
 	}
@@ -117,6 +127,11 @@ public:
 			if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
 				strcpy_s(subjectNames[semesterNumber_][i], "");
 				marks[semesterNumber_][i] = 0;
+				for (int j = i + 1; j < SUBJECTS_NUMBER; ++j) {
+					marks[semesterNumber_][j - 1] = marks[semesterNumber_][j];
+					strcpy_s(subjectNames[semesterNumber_][j - 1], subjectNames[semesterNumber_][j]);
+				}
+				break;
 			}
 		}
 	}

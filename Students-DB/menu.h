@@ -9,41 +9,7 @@ string currentPath = ".\\Students";
 #include "directory_functions.h"
 #include "object_functions.h"
 #include "menu_models.h"
-
-
-class InputMenu {
-public:
-	static string Run(string message, string iString, int maxLength) {
-		string inputString = iString;
-		int key = 0;
-		system(CLEAR_COMMAND);
-		PrintOneParam(message + inputString);
-		while (true) {
-			key = _getch();
-			switch (key)
-			{
-			case (ESC):
-				inputString = ESCAPE_STRING;
-				return inputString;
-			case (ENTER):
-				return inputString;
-				break;
-			case (BACKSPACE):
-				if (inputString.length() > 0) {
-					ClearLastLetter(message + inputString);
-					inputString = inputString.substr(0, inputString.length() - 1);
-				}
-				break;
-			default:
-				if (inputString.length() <= maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ')) {
-					inputString += string(1, key);
-					AddNewLetter(key);
-					break;
-				}
-			}
-		}
-	}
-};
+#include "input_menus.h"
 
 class SelectDirParam : public virtual SelectParamMenuReturnModel {
 public:
@@ -120,11 +86,27 @@ private:
 		return *GetStudentsParams(currentPath, student);
 	}
 	void Printer() override {
-		// PrintStudent
 		PrintStudent(params, backupParams, header);
 	}
 	virtual void OnEnter() override {
-		// switch
+		switch (selectedOption) {
+		case 0: {
+			string newSurname = InputLetterOnlyMenu::Run("Enter the student's surname: ", student.GetSurname(), DEFAULT_STRING_LENGTH - 1);
+			while (newSurname == "") {
+				newSurname = InputLetterOnlyMenu::Run("Enter the correct surname: ", student.GetSurname(), DEFAULT_STRING_LENGTH - 1);
+			}
+			if (newSurname != ESCAPE_STRING) {
+				DeleteStudentFile(currentPath);
+				student.SetSurname(newSurname);
+				currentPath = GetCurrentPath(student);
+			}
+			break;
+		}
+		case 1:
+			break;
+		}
+		Write(student);
+		ResetParams();
 	}
 };
 
@@ -146,22 +128,23 @@ private:
 		StudentsParamsMenu paramsMenu{};
 		paramsMenu.Run();
 		RestoreCurrentPath();
+		ResetParams();
 	}
 
 	void OnCreate() override{
-		string surname = InputMenu::Run("Enter the student's surname: ", "", DEFAULT_STRING_LENGTH - 1);
+		string surname = InputLetterOnlyMenu::Run("Enter the student's surname: ", "", DEFAULT_STRING_LENGTH - 1);
 		while (surname == "") {
-			surname = InputMenu::Run("Please, enter some surname: ", "", DEFAULT_STRING_LENGTH - 1);
+			surname = InputLetterOnlyMenu::Run("Please, enter some surname: ", "", DEFAULT_STRING_LENGTH - 1);
 		}
 		if (surname != ESCAPE_STRING) {
-			string name = InputMenu::Run("Enter the student's name: ", "", DEFAULT_STRING_LENGTH - 1);
+			string name = InputLetterOnlyMenu::Run("Enter the student's name: ", "", DEFAULT_STRING_LENGTH - 1);
 			while (name == "") {
-				name = InputMenu::Run("Please, enter some name: ", "", DEFAULT_STRING_LENGTH - 1);
+				name = InputLetterOnlyMenu::Run("Please, enter some name: ", "", DEFAULT_STRING_LENGTH - 1);
 			}
 			if (name != ESCAPE_STRING) {
-				string patronymic = InputMenu::Run("Enter the student's patronymic: ", "", DEFAULT_STRING_LENGTH - 1);
+				string patronymic = InputLetterOnlyMenu::Run("Enter the student's patronymic: ", "", DEFAULT_STRING_LENGTH - 1);
 				while (patronymic == "") {
-					patronymic = InputMenu::Run("Please, enter some patronymic: ", "", DEFAULT_STRING_LENGTH - 1);
+					patronymic = InputLetterOnlyMenu::Run("Please, enter some patronymic: ", "", DEFAULT_STRING_LENGTH - 1);
 				}
 				if (patronymic != ESCAPE_STRING) {
 					if (IsStudentExists(surname + " " + name + " " + patronymic, currentPath)) {

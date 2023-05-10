@@ -34,7 +34,7 @@ List<string>* GetStudentsParams(string currentPath, Student& student) {
     params->Append("Group: " + student.GetGroup());
     params->Append("RecordBookNumber: " + student.GetRecordBookNumber());
     params->Append("Gender: " + student.GetGender());
-    params->Append("Admission year: " + to_string(student.GetAdmissionYear()));
+    params->Append("Admission year: " + student.GetStringAdmissionYear());
     params->Append("Birthday: " + student.GetBirthday().GetDateInString());
     params->Append("Marks");
 
@@ -114,4 +114,14 @@ bool IsObjectExists() {
 List<string>* GetClearList() {
     List<string>* temp = new List<string>();
     return temp;
+}
+
+string GetCurrentPath(Student& student) {
+    string path = ".\\Students\\";
+    path += student.GetInstitute() + "\\";
+
+    path += student.GetGroup() + "\\";
+
+    path += student.GetSurname() + "_" + student.GetName() + "_" + student.GetPatronymic() + ".bin"; // .enc
+    return path;
 }
