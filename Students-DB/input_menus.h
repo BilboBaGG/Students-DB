@@ -24,7 +24,7 @@ public:
 				}
 				break;
 			default:
-				if (inputString.length() <= maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ')) {
+				if (inputString.length() < maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ')) {
 					inputString += string(1, key);
 					AddNewLetter(key);
 					break;
@@ -58,7 +58,7 @@ public:
 				}
 				break;
 			default:
-				if (inputString.length() <= maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == ' ')) {
+				if (inputString.length() < maxLength && (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == ' ')) {
 					inputString += string(1, key);
 					AddNewLetter(key);
 					break;
@@ -92,7 +92,7 @@ public:
 				}
 				break;
 			default:
-				if (inputString.length() <= maxLength && (key <= '9' && key >= '0')) {
+				if (inputString.length() < maxLength && (key <= '9' && key >= '0')) {
 					inputString += string(1, key);
 					AddNewLetter(key);
 					break;

@@ -102,8 +102,114 @@ private:
 			}
 			break;
 		}
-		case 1:
+		case 1: {
+			string newName = InputLetterOnlyMenu::Run("Enter the student's name: ", student.GetName(), DEFAULT_STRING_LENGTH - 1);
+			while (newName == "") {
+				newName = InputLetterOnlyMenu::Run("Enter the correct name: ", student.GetName(), DEFAULT_STRING_LENGTH - 1);
+			}
+			if (newName != ESCAPE_STRING) {
+				DeleteStudentFile(currentPath);
+				student.SetName(newName);
+				currentPath = GetCurrentPath(student);
+			}
 			break;
+		}
+		case 2: {
+			string newPatronymic = InputLetterOnlyMenu::Run("Enter the student's name: ", student.GetPatronymic(), DEFAULT_STRING_LENGTH - 1);
+			while (newPatronymic == "") {
+				newPatronymic = InputLetterOnlyMenu::Run("Enter the correct name: ", student.GetPatronymic(), DEFAULT_STRING_LENGTH - 1);
+			}
+			if (newPatronymic != ESCAPE_STRING) {
+				DeleteStudentFile(currentPath);
+				student.SetPatronymic(newPatronymic);
+				currentPath = GetCurrentPath(student);
+			}
+			break;
+		}
+		case 3: { // Validation!
+			string newInstitute = InputMenu::Run("Enter the student's institute: ", student.GetInstitute(), DEFAULT_STRING_LENGTH - 1);
+			while (newInstitute == "") {
+				newInstitute = InputMenu::Run("Enter the correct institute: ", student.GetInstitute(), DEFAULT_STRING_LENGTH - 1);
+			}
+			if (newInstitute != ESCAPE_STRING) {
+				student.SetInstitute(newInstitute);
+			}
+			break;
+		}
+		case 4: {
+			string newDepartment = InputMenu::Run("Enter the student's department: ", student.GetDepartment(), DEFAULT_STRING_LENGTH - 1);
+			while (newDepartment == "") {
+				newDepartment = InputMenu::Run("Enter the correct department: ", student.GetDepartment(), DEFAULT_STRING_LENGTH - 1);
+			}
+			if (newDepartment != ESCAPE_STRING) {
+				student.SetDepartment(newDepartment);
+			}
+			break;
+		}
+		case 5: { // Validation!
+			string newGroup = InputMenu::Run("Enter the student's group: ", student.GetGroup(), DEFAULT_STRING_LENGTH - 1);
+			while (newGroup == "") {
+				newGroup = InputMenu::Run("Enter the correct group: ", student.GetGroup(), DEFAULT_STRING_LENGTH - 1);
+			}
+			if (newGroup != ESCAPE_STRING) {
+				student.SetGroup(newGroup);
+			}
+			break;
+		}
+		case 6: {
+			string newRecordBookNumber = InputMenu::Run("Enter the student's record book number: ", student.GetRecordBookNumber(), RECORD_BOOK_STR_LENGTH - 2);
+			while (newRecordBookNumber == "") {
+				newRecordBookNumber = InputMenu::Run("Enter the correct record book number: ", student.GetRecordBookNumber(), RECORD_BOOK_STR_LENGTH - 2);
+			}
+			if (newRecordBookNumber != ESCAPE_STRING) {
+				student.SetRecordBookNumber(newRecordBookNumber);
+			}
+			break;
+		}
+		case 7: {
+			string newGender = InputLetterOnlyMenu::Run("Enter the student's gender: ", student.GetGender(), 1);
+			while (newGender == "") {
+				newGender = InputLetterOnlyMenu::Run("Enter the correct gender: ", student.GetGender(), 1);
+			}
+			if (newGender != ESCAPE_STRING) {
+				student.SetGender(newGender);
+			}
+			break;
+		}
+		case 8: {
+			string newAdmissionYear = InputNumberOnlyMenu::Run("Enter the student's admission year: ", student.GetStringAdmissionYear(), 4);
+			while (newAdmissionYear == "") {
+				newAdmissionYear = InputNumberOnlyMenu::Run("Enter the correct admission year: ", student.GetStringAdmissionYear(), 4);
+			}
+			if (newAdmissionYear != ESCAPE_STRING) {
+				student.SetAdmissionYear(stoi(newAdmissionYear));
+			}
+			break;
+		}
+		case 9: {
+			string day = InputNumberOnlyMenu::Run("Enter the student's day of birthday: ", "", 2);
+			while (day == "") {
+				day = InputNumberOnlyMenu::Run("Please, enter correct day of birthday: ", "", 2);
+			}
+			if (day != ESCAPE_STRING) {
+				string month = InputNumberOnlyMenu::Run("Enter the student's month of birthday: ", "", 2);
+				while (month == "") {
+					month = InputNumberOnlyMenu::Run("Please, enter correct month of birthday: ", "", 2);
+				}
+				if (month != ESCAPE_STRING) {
+					string year = InputNumberOnlyMenu::Run("Enter the student's year of birthday: ", "", 4);
+					while (year == "") {
+						year = InputNumberOnlyMenu::Run("Please, enter correct year of birthday: ", "", 4);
+					}
+					if (year != ESCAPE_STRING) {
+						Date birthday = {stoi(day),stoi(month), stoi(year)};
+						student.SetBirthday(birthday);
+					}
+				}
+			}
+			break;
+		}
+
 		}
 		Write(student);
 		ResetParams();

@@ -16,7 +16,7 @@ int main() {
 	InstituteSelectionMenu startMenu;
 	startMenu.Run();
 
-	Student misha;
+	/*Student misha;
 	misha.SetName("Mikhail");
 	misha.SetSurname("Kobyak");
 	misha.SetPatronymic("Evgenyevich");
@@ -33,10 +33,10 @@ int main() {
 
 	misha.AddMark(4, "Latin", 2);
 
-	Write(misha);
+	Write(misha);*/
 
 
-	cout << misha.GetAdmissionYear();
+	//cout << misha.GetAdmissionYear();
 	//Student kolobok = Read("./Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin");
 
 	//kolobok.DeleteSubject(0, "Math");
