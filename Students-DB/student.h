@@ -162,24 +162,4 @@ public:
 			}
 		}
 	}
-
-	/*Marks& GetSemesterMarks(int semesterNumber) {
-		return *(marks[semesterNumber - 1]);
-	}*/
-
-	/*string StringParseMarks() {
-		string parsedMarks = "";
-
-
-		for (int i = 0; i < marks.Length(); ++i) {
-			if (marks[i]->GetSubjectsNumber()!=0) {	
-				parsedMarks += to_string(marks[i]->GetSemesterNumber()) + ":" + marks[i]->GetParsedMarks();
-				if (i != marks.Length() - 1) {
-					parsedMarks += "\n";
-				}
-			}
-		}
-		return parsedMarks;
-	}*/
-
 };

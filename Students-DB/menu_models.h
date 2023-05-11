@@ -164,7 +164,7 @@ protected:
 		params[selectedOption] = GREEN + params[selectedOption] + RESET;
 	}
 
-	virtual void OnEnter() = 0;
+	virtual void OnEnter(){}
 
 	void ExitFunction() {
 		delete& backupParams;

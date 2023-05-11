@@ -73,6 +73,27 @@ protected:
 	}
 };
 
+class SemesterSelectionMenu : public virtual MainChooseMenu {
+public:
+	SemesterSelectionMenu(string param) {
+		header = "Select semester marks for " + param;
+	}
+private:
+	string header;
+	List<string>& ParseParams() override {
+		List<string>* params = new List<string>;
+		for (int i = 1; i < 10; ++i) {
+			params->Append("Semester " + to_string(i));
+		}
+		return *params;
+	}
+	void Printer() override {
+		PrintParams(params,backupParams,header);
+	}
+};
+
+
+
 class StudentsParamsMenu : public virtual MainChooseMenu{
 public:
 	Student student;
@@ -209,7 +230,11 @@ private:
 			}
 			break;
 		}
-
+		case 10: {
+			SemesterSelectionMenu semesters {student.GetSurname() + " " + student.GetName() + " " + student.GetPatronymic()};
+			semesters.Run();
+			break;
+		}
 		}
 		Write(student);
 		ResetParams();
