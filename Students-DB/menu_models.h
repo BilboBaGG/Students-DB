@@ -167,8 +167,8 @@ protected:
 	virtual void OnEnter(){}
 
 	void ExitFunction() {
-		delete& backupParams;
-		delete& params;
+		//delete& backupParams;
+		//delete& params;
 	}
 };
 
@@ -184,10 +184,10 @@ private:
 	virtual List<string>& ParseParams() = 0;
 
 	void ResetParams() {
-		List<string>* tempPointer = &backupParams;
-		delete tempPointer;
-		tempPointer = &params;
-		delete tempPointer;
+		//List<string>* tempPointer = &backupParams;
+		//delete tempPointer;
+		//tempPointer = &params;
+		//delete tempPointer;
 
 		backupParams = ParseParams();
 		params = ParseParams();
@@ -204,8 +204,8 @@ private:
 	}
 
 	string OnEsc() {
-		delete& backupParams;
-		delete& params;
+		//delete& backupParams;
+		//delete& params;
 		return ESCAPE_STRING;
 	}
 
