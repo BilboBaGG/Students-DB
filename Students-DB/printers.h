@@ -103,6 +103,24 @@ void PrintParamsWithExtraButtons(List<string>& params, List<string>& backupParam
 	PrintLine();
 }
 
+void PrintMarksWithExtraButtons(List<string>& params, List<string>& backupParams, string header) {
+	int identicalButtonsNumber = params.Length() - 2;
+	PrintHeader(header);
+	for (int i = 0; i < params.Length(); ++i) {
+		if (i == identicalButtonsNumber) PrintClearLine();
+		string param = params[i];
+		string backupParam = backupParams[i];
+
+		if (backupParam.length() % 2 == 1) {
+			param += " ";
+			backupParam += " ";
+		}
+
+		cout << "|     " << param << string(LINE_LENGTH - 7 - backupParam.length(), ' ') << "|\n";
+	}
+	PrintLine();
+}
+
 void PrintStudent(List<string>& params, List<string>& backupParams, string header) {
 	PrintHeader(header);
 	for (int i = 0; i < params.Length(); ++i) {

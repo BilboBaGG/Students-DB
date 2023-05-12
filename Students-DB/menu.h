@@ -1,9 +1,10 @@
 #pragma once
 
-string currentPath = ".\\Students";
-
 #include <conio.h>
 #include <windows.h>
+
+string currentPath = ".\\Students";
+Student* currentStudent;
 
 #include "printers.h"
 #include "directory_functions.h"
@@ -73,6 +74,63 @@ protected:
 	}
 };
 
+class MarksSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
+public:
+	MarksSelectionMenu(int selectedSemester_) {
+		object = "mark";
+		
+		selectedSemester = selectedSemester_;
+		header = "Here is marks for " + currentStudent->GetSurname() + " " + currentStudent->GetName() + " " + currentStudent->GetPatronymic() + " in " + to_string(selectedSemester + 1) + " semester";
+	}
+private:
+	string header;
+	int selectedSemester;
+	List<string>& ParseParams() override {
+		List<string>* marks = new List<string>;
+		for (int i = 0; i < currentStudent->GetMarksNumberInSemester(selectedSemester); ++i) {
+			marks->Append(currentStudent->GetSubjcetName(selectedSemester, i) + ": " + to_string(currentStudent->GetMark(selectedSemester, i)));
+		}
+		marks->Append("Add subject");
+		marks->Append("Delete sybject");
+		return *marks;
+	}
+	void Printer() override {
+		PrintMarksWithExtraButtons(params, backupParams, header);
+	}
+	void OnCreate() override {
+		if (currentStudent->GetMarksNumberInSemester(selectedSemester) != SUBJECTS_NUMBER) {
+			string subject = InputLetterOnlyMenu::Run("Ehter the name of new subject: ", "", 30);
+			while (subject == "") {
+				subject = InputLetterOnlyMenu::Run("Ehter correct name of new subject: ", "", 30);
+			}
+			if (subject != ESCAPE_STRING) {
+				string mark = InputMarkMenu::Run("Enter the mark: ", "", 1);
+
+				while (mark == "") {
+					mark = InputMarkMenu::Run("Enter the mark correctly: ", "", 1);
+				}
+
+				if (mark != ESCAPE_STRING) {
+					currentStudent->AddMark(selectedSemester, subject, stoi(mark));
+					Write(*currentStudent);
+					InfoMenu::Run("Subject successfully added!!!");
+					ResetParams();
+
+				}
+			}
+		} else {
+			InfoMenu::Run("All marks are already filled!!");
+		}
+	}
+	void OnDelete() override {
+
+	}
+	void NextMenuRun(string selectedParam) override {
+
+	}
+
+};
+
 class SemesterSelectionMenu : public virtual MainChooseMenu {
 public:
 	SemesterSelectionMenu(string param) {
@@ -89,6 +147,11 @@ private:
 	}
 	void Printer() override {
 		PrintParams(params,backupParams,header);
+	}
+	void OnEnter() override {
+		MarksSelectionMenu marks{selectedOption};
+		marks.Run();
+
 	}
 };
 
@@ -231,6 +294,7 @@ private:
 			break;
 		}
 		case 10: {
+			currentStudent = &student;
 			SemesterSelectionMenu semesters {student.GetSurname() + " " + student.GetName() + " " + student.GetPatronymic()};
 			semesters.Run();
 			break;

@@ -125,10 +125,10 @@ protected:
 	virtual string InputMenu() { return ""; }
 
 	void ResetParams() {
-		List<string>* tempPointer = &backupParams;
-		delete tempPointer;
-		tempPointer = &params;
-		delete tempPointer;
+		//List<string>* tempPointer = &backupParams;
+		//delete tempPointer;
+		//tempPointer = &params;
+		//delete tempPointer;
 
 
 		backupParams = ParseParams();
