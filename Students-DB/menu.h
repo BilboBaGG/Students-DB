@@ -106,7 +106,7 @@ class MarksSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	MarksSelectionMenu(int selectedSemester_) {
 		object = "mark";
-		
+
 		selectedSemester = selectedSemester_;
 		header = "Here is marks for " + currentStudent->GetSurname() + " " + currentStudent->GetName() + " " + currentStudent->GetPatronymic() + " in " + to_string(selectedSemester + 1) + " semester";
 	}
@@ -132,21 +132,27 @@ private:
 				subject = letterOnlyInputMenu.Run("Ehter correct name of new subject: ", "", 30);
 			}
 			if (subject != ESCAPE_STRING) {
-				string mark = markMenu.Run("Enter the mark: ", "", 1);
+				if (!currentStudent->IsSubjectExists(selectedSemester, subject)) {
+					string mark = markMenu.Run("Enter the mark: ", "", 1);
 
-				while (mark == "") {
-					mark = markMenu.Run("Enter the mark correctly: ", "", 1);
+					while (mark == "") {
+						mark = markMenu.Run("Enter the mark correctly: ", "", 1);
+					}
+
+					if (mark != ESCAPE_STRING) {
+						currentStudent->AddMark(selectedSemester, subject, stoi(mark));
+						Write(*currentStudent);
+						InfoMenu::Run("Subject successfully added!!!");
+						ResetParams();
+
+					}
 				}
-
-				if (mark != ESCAPE_STRING) {
-					currentStudent->AddMark(selectedSemester, subject, stoi(mark));
-					Write(*currentStudent);
-					InfoMenu::Run("Subject successfully added!!!");
-					ResetParams();
-
+				else {
+					InfoMenu::Run("This subject is already exists!");
 				}
 			}
-		} else {
+		}
+		else {
 			InfoMenu::Run("All marks are already filled!!");
 		}
 	}
@@ -154,19 +160,32 @@ private:
 		if (currentStudent->GetMarksNumberInSemester(selectedSemester) != 0) {
 			DeleteMark deleteMark{ selectedSemester };
 			string subjectToDelete = deleteMark.Run();
-			subjectToDelete = GetSubjectName(subjectToDelete);
-			currentStudent->DeleteSubject(selectedSemester, subjectToDelete);
+			if (subjectToDelete != ESCAPE_STRING) {
+				subjectToDelete = GetSubjectName(subjectToDelete);
+				currentStudent->DeleteSubject(selectedSemester, subjectToDelete);
 
-			Write(*currentStudent);
-			InfoMenu::Run("Subject successfully deleted!");
-			ResetParams();
+				Write(*currentStudent);
+				InfoMenu::Run("Subject successfully deleted!");
+				ResetParams();
+			}
 		}
 		else {
 			InfoMenu::Run("Nothing to delete!");
 		}
 	}
 	void NextMenuRun(string selectedParam) override {
+		string mark = markMenu.Run("Enter the new mark for " + GetSubjectName(selectedParam) + ": ", "", 1);
 
+		while (mark == "") {
+			mark = markMenu.Run("Enter the new mark for " + GetSubjectName(selectedParam) + " correctly: ", "", 1);
+		}
+
+		if (mark != ESCAPE_STRING) {
+			currentStudent->SetMark(selectedSemester, GetSubjectName(selectedParam), stoi(mark));
+			Write(*currentStudent);
+			InfoMenu::Run("Subject successfully added!!!");
+			ResetParams();
+		}
 	}
 
 };
@@ -186,10 +205,10 @@ private:
 		return *params;
 	}
 	void Printer() override {
-		PrintParams(params,backupParams,header);
+		PrintParams(params, backupParams, header);
 	}
 	void OnEnter() override {
-		MarksSelectionMenu marks{selectedOption};
+		MarksSelectionMenu marks{ selectedOption };
 		marks.Run();
 
 	}
@@ -197,7 +216,7 @@ private:
 
 
 
-class StudentsParamsMenu : public virtual MainChooseMenu{
+class StudentsParamsMenu : public virtual MainChooseMenu {
 public:
 	Student student;
 	StudentsParamsMenu() {
@@ -312,7 +331,7 @@ private:
 		}
 		case 9: {
 			string day = numberOnlyInput.Run("Enter the student's day of birthday: ", "", 2);
-			while (day == "" || stoi(day) >12) {
+			while (day == "" || stoi(day) > 12) {
 				day = numberOnlyInput.Run("Please, enter correct day of birthday: ", "", 2);
 			}
 			if (day != ESCAPE_STRING) {
@@ -326,7 +345,7 @@ private:
 						year = numberOnlyInput.Run("Please, enter correct year of birthday: ", "", 4);
 					}
 					if (year != ESCAPE_STRING) {
-						Date birthday = {stoi(day),stoi(month), stoi(year)};
+						Date birthday = { stoi(day),stoi(month), stoi(year) };
 						student.SetBirthday(birthday);
 					}
 				}
@@ -335,7 +354,7 @@ private:
 		}
 		case 10: {
 			currentStudent = &student;
-			SemesterSelectionMenu semesters {student.GetSurname() + " " + student.GetName() + " " + student.GetPatronymic()};
+			SemesterSelectionMenu semesters{ student.GetSurname() + " " + student.GetName() + " " + student.GetPatronymic() };
 			semesters.Run();
 			break;
 		}
@@ -366,7 +385,7 @@ private:
 		ResetParams();
 	}
 
-	void OnCreate() override{
+	void OnCreate() override {
 		string surname = letterOnlyInputMenu.Run("Enter the student's surname: ", "", DEFAULT_STRING_LENGTH - 1);
 		while (surname == "") {
 			surname = letterOnlyInputMenu.Run("Please, enter some surname: ", "", DEFAULT_STRING_LENGTH - 1);
@@ -384,7 +403,8 @@ private:
 				if (patronymic != ESCAPE_STRING) {
 					if (IsStudentExists(surname + " " + name + " " + patronymic, currentPath)) {
 						InfoMenu::Run("This student is already in the database");
-					} else {
+					}
+					else {
 						Student student;
 						student.SetName(name);
 						student.SetSurname(surname);
@@ -465,7 +485,7 @@ private:
 	List<string>& ParseParams() override {
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
-	void OnCreate() { 
+	void OnCreate() {
 		string createdObject = baseInputMenu.Run("Enter the name of the new " + object + " : ", "", 30);
 
 		while (createdObject.length() == 0) {
@@ -486,7 +506,7 @@ private:
 			}
 		}
 	}
-	void OnDelete() override { 
+	void OnDelete() override {
 		if (identicalButtonsNumber > 0) {
 			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();
