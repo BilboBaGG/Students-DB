@@ -199,7 +199,7 @@ private:
 		ResetParams();
 	}
 
-	void InerationPrinter() override {
+	virtual void InerationPrinter() override {
 		PrintParams(params, backupParams, header);
 	}
 

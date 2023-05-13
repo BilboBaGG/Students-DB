@@ -135,6 +135,14 @@ public:
 			}
 		}
 	}
+	/*void DeleteSubject(int semesterNumber_, int index) {
+		strcpy_s(subjectNames[semesterNumber_][index], "");
+		marks[semesterNumber_][index] = 0;
+		for (int j = index + 1; j < SUBJECTS_NUMBER; ++j) {
+			marks[semesterNumber_][j - 1] = marks[semesterNumber_][j];
+			strcpy_s(subjectNames[semesterNumber_][j - 1], subjectNames[semesterNumber_][j]);
+		}
+	}*/
 
 	string GetSubjcetName(int semesterNumber_, int index) {
 		return subjectNames[semesterNumber_][index];

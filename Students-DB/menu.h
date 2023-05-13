@@ -19,6 +19,21 @@ GenderInputMenu genderInut{};
 InputNumberOnlyMenu numberOnlyInput{};
 InputMarkMenu markMenu{};
 
+class InfoMenu {
+public:
+	static void Run(string message) {
+		system(CLEAR_COMMAND);
+		PrintOneParam(message);
+		int key = 0;
+		while (true) {
+			key = _getch();
+			if (key == ESC || key == ENTER) {
+				break;
+			}
+		}
+	}
+};
+
 class SelectDirParam : public virtual SelectParamMenuReturnModel {
 public:
 	SelectDirParam(string object_, string header_) {
@@ -43,18 +58,24 @@ private:
 	}
 };
 
-class InfoMenu {
+class DeleteMark : public virtual SelectParamMenuReturnModel {
 public:
-	static void Run(string message) {
-		system(CLEAR_COMMAND);
-		PrintOneParam(message);
-		int key = 0;
-		while (true) {
-			key = _getch();
-			if (key == ESC || key == ENTER) {
-				break;
-			}
+	DeleteMark(int selectedSemester_) {
+		selectedSemester = selectedSemester_;
+		header = "Select subject to delete";
+	}
+private:
+
+	int selectedSemester;
+	void InerationPrinter() override {
+		PrintMarks(params, backupParams, header);
+	}
+	List<string>& ParseParams() override {
+		List<string>* marks = new List<string>;
+		for (int i = 0; i < currentStudent->GetMarksNumberInSemester(selectedSemester); ++i) {
+			marks->Append(currentStudent->GetSubjcetName(selectedSemester, i) + ": " + to_string(currentStudent->GetMark(selectedSemester, i)));
 		}
+		return *marks;
 	}
 };
 
@@ -130,7 +151,19 @@ private:
 		}
 	}
 	void OnDelete() override {
+		if (currentStudent->GetMarksNumberInSemester(selectedSemester) != 0) {
+			DeleteMark deleteMark{ selectedSemester };
+			string subjectToDelete = deleteMark.Run();
+			subjectToDelete = GetSubjectName(subjectToDelete);
+			currentStudent->DeleteSubject(selectedSemester, subjectToDelete);
 
+			Write(*currentStudent);
+			InfoMenu::Run("Subject successfully deleted!");
+			ResetParams();
+		}
+		else {
+			InfoMenu::Run("Nothing to delete!");
+		}
 	}
 	void NextMenuRun(string selectedParam) override {
 

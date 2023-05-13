@@ -100,6 +100,15 @@ string GetFilenameFromParsedStudent(string parsedStudent) {
     return filename;
 }
 
+string GetSubjectName(string mark) {
+    stringstream ss(mark);
+    string subjectName, tempString;
+    getline(ss, tempString, ':');
+    subjectName += tempString;
+
+    return subjectName;
+}
+
 bool IsAdditionMenu(int selectedOption, int identicalButtonsNumber) {
     return selectedOption == identicalButtonsNumber;
 }

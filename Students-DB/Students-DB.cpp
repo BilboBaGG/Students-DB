@@ -16,38 +16,25 @@ int main() {
 	InstituteSelectionMenu startMenu;
 	startMenu.Run();
 
-	/*Student misha;
-	misha.SetName("Mikhail");
-	misha.SetSurname("Kobyak");
-	misha.SetPatronymic("Evgenyevich");
-	misha.SetGroup("BISO-01-22");
-	misha.SetInstitute("IKB");
-	misha.SetRecordBookNumber(string(8, 'h'));
-	Date date = { 18, 01, 2005 };
+	/*Student kolobok = Read("./Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin");
 
-	misha.SetBirthday(date);
+	for (int j = 0; j < 1; ++j) {
+		cout << j << " semester\n";
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			cout << kolobok.GetSubjcetName(j, i) << " : " << kolobok.GetMark(j, i) << endl;
+		}
+		cout << "\n";
+	}
 
-	misha.AddMark(0,"Math",5);
-	misha.AddMark(0,"Russian",4);
-	misha.AddMark(0, "Info", 3);
-
-	misha.AddMark(4, "Latin", 2);
-
-	Write(misha);*/
+	kolobok.DeleteSubject(0, 0);
 
 
-	//cout << misha.GetAdmissionYear();
-	//Student kolobok = Read("./Students/IKB/BISO-01-22/Kobyak_Mikhail_Evgenyevich.bin");
-
-	//kolobok.DeleteSubject(0, "Math");
-
-
-	//for (int j = 0; j < SEMESTERS_NUMBER; ++j) {
-	//	cout << j << " semester\n";
-	//	for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-	//		cout << kolobok.GetSubjcetName(j, i) << " : " << kolobok.GetMark(j, i) << endl;
-	//	}
-	//	cout << "\n";
-	//}
-	//cout << kolobok.GetMarksNumberInSemester(0);
+	for (int j = 0; j < 1; ++j) {
+		cout << j << " semester\n";
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			cout << kolobok.GetSubjcetName(j, i) << " : " << kolobok.GetMark(j, i) << endl;
+		}
+		cout << "\n";
+	}
+	cout << kolobok.GetMarksNumberInSemester(0);*/
 }
