@@ -137,17 +137,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="date.h" />
+    <ClInclude Include="default_selection_menus.h" />
     <ClInclude Include="directory_functions.h" />
     <ClInclude Include="file_functions.h" />
     <ClInclude Include="input_menus.h" />
     <ClInclude Include="menu_models.h" />
     <ClInclude Include="object_functions.h" />
     <ClInclude Include="list.h" />
-    <ClInclude Include="menu.h" />
+    <ClInclude Include="main_selection_menus.h" />
     <ClInclude Include="printers.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="marks.h" />
     <ClInclude Include="student.h" />
+    <ClInclude Include="student_menus.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

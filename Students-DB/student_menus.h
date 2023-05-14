@@ -1,47 +1,5 @@
 #pragma once
 
-#include <conio.h>
-#include <windows.h>
-
-string currentPath = ".\\Students";
-Student* currentStudent;
-
-
-#include "printers.h"
-#include "directory_functions.h"
-#include "object_functions.h"
-#include "menu_models.h"
-#include "input_menus.h"
-
-BaseInputMenu baseInputMenu{};
-InputLetterOnlyMenu letterOnlyInputMenu{};
-GenderInputMenu genderInut{};
-InputNumberOnlyMenu numberOnlyInput{};
-InputMarkMenu markMenu{};
-
-class SelectDirParam : public virtual SelectParamMenuReturnModel {
-public:
-	SelectDirParam(string object_, string header_) {
-		object = object_;
-		header = header_;
-	}
-private:
-	List<string>& ParseParams() override {
-		return *GetNewObjectParams();
-	}
-};
-
-class SelectStudentParam : public virtual SelectParamMenuReturnModel {
-public:
-	SelectStudentParam(string object_, string header_) {
-		object = object_;
-		header = header_;
-	}
-private:
-	List<string>& ParseParams() override {
-		return *GetParsedStudentsFromDir(currentPath);
-	}
-};
 
 class DeleteMark : public virtual SelectParamMenuReturnModel {
 public:
@@ -327,15 +285,12 @@ private:
 };
 
 class TypeStudentMenu : public virtual MainChooseMenu {
-public:
-	TypeStudentMenu() {
-		object = "student";
-	}
 protected:
+	string type = "";
 	virtual bool IsValid(int mark) = 0;
 
 	void Printer() override {
-		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
+		PrintParams(params, backupParams, "Select " + type + " student from " + GetGroup());
 	}
 
 	List<string>& ParseParams() override {
@@ -362,24 +317,36 @@ protected:
 		isExit = true;
 
 	}
-};
+}; 
 
 class ExcelentStudentMenu : public virtual TypeStudentMenu {
-protected:
+public:
+	ExcelentStudentMenu() {
+		type = "excelent";
+	}
+private:
 	bool IsValid(int mark) override {
 		return (mark == 5);
 	}
 };
 
 class GoodStudentMenu : public virtual TypeStudentMenu {
-protected:
+public:
+	GoodStudentMenu() {
+		type = "good";
+	}
+private:
 	bool IsValid(int mark) override {
 		return (mark == 4);
 	}
 };
 
 class BadStudentMenu : public virtual TypeStudentMenu {
-protected:
+public:
+	BadStudentMenu() {
+		type = "bad";
+	}
+private:
 	bool IsValid(int mark) override {
 		return (mark == 2 || mark == 3);
 	}
@@ -537,124 +504,6 @@ private:
 			StudentModeMenu modeMenu;
 			modeMenu.Run();
 
-		}
-	}
-};
-
-
-class GroupSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
-public:
-	GroupSelectionMenu() {
-		object = "group";
-	}
-private:
-	void Printer() {
-		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from " + GetInstitute(), identicalButtonsNumber);
-	}
-	void NextMenuRun(string selectedParam) override {
-		currentPath += "\\" + selectedParam;
-		StudentsOptionsSelectionMenu option{};
-		option.Run();
-		RestoreCurrentPath();
-
-	}
-	List<string>& ParseParams() override {
-		return *GetNewDirParamsWithExtraParams(currentPath, object);
-	}
-	void OnCreate() {
-		string createdObject = baseInputMenu.Run("Enter the name of the new " + object + " : ", "", 30);
-
-		while (createdObject.length() == 0) {
-			createdObject = baseInputMenu.Run("Enter correct " + object + " name : ", "", 30);
-		}
-
-		if (createdObject != ESCAPE_STRING) {
-			if (!IsDirectoryExists(createdObject, currentPath)) {
-				MakeDirectory(currentPath + "\\" + createdObject);
-
-				ResetParams();
-
-				InfoMenu::Run("Successfully added " + object + "!");
-
-			}
-			else {
-				InfoMenu::Run("Group already created!");
-			}
-		}
-	}
-	void OnDelete() override {
-		if (identicalButtonsNumber > 0) {
-			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
-			string selectedObject = delMenu.Run();
-
-			if (selectedObject != ESCAPE_STRING) {
-				DeleteDirectory(currentPath + "\\" + selectedObject);
-
-				ResetParams();
-
-				InfoMenu::Run("Successfully deleted " + object + "!");
-			}
-		}
-		else {
-			InfoMenu::Run("Nothing to delete!");
-		}
-	}
-};
-
-class InstituteSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
-public:
-	InstituteSelectionMenu() {
-		object = "institute";
-	}
-private:
-	void Printer() override {
-		PrintParamsWithExtraButtons(params, backupParams, "Select " + object + " from DB", identicalButtonsNumber);
-	}
-	void NextMenuRun(string selectedParam) override {
-		currentPath += "\\" + selectedParam;
-		GroupSelectionMenu groupMenu;
-		groupMenu.Run();
-		RestoreCurrentPath();
-	}
-
-	List<string>& ParseParams() override {
-		return *GetNewDirParamsWithExtraParams(currentPath, object);
-	}
-	void OnCreate() { // Default (we can make custom)
-		string createdObject = baseInputMenu.Run("Enter the name of the new " + object + " : ", "", 30);
-
-		while (createdObject.length() == 0) {
-			createdObject = baseInputMenu.Run("Enter correct " + object + " name : ", "", 30);
-		}
-
-		if (createdObject != ESCAPE_STRING) {
-			if (!IsDirectoryExists(createdObject, currentPath)) {
-				MakeDirectory(currentPath + "\\" + createdObject);
-
-				ResetParams();
-
-				InfoMenu::Run("Successfully added " + object + "!");
-
-			}
-			else {
-				InfoMenu::Run("Institute already created!");
-			}
-		}
-	}
-	void OnDelete() override { // Default (we can make custom)
-		if (identicalButtonsNumber > 0) {
-			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
-			string selectedObject = delMenu.Run();
-			if (selectedObject != ESCAPE_STRING) {
-				DeleteDirectory(currentPath + "\\" + selectedObject);
-
-				ResetParams();
-
-				InfoMenu::Run("Successfully deleted " + object + "!");
-			}
-		}
-		else {
-			InfoMenu::Run("Nothing to delete!");
 		}
 	}
 };

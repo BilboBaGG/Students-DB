@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="menu.h">
+    <ClInclude Include="main_selection_menus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="list.h">
@@ -54,6 +54,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="input_menus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="default_selection_menus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="student_menus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
