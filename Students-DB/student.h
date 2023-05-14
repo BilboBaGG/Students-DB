@@ -122,6 +122,18 @@ public:
 		return mark;
 	}
 
+	int GetMinMark() {
+		int minMark = 6;
+		for (int i = 0; i < SEMESTERS_NUMBER; ++i) {
+			for (int j = 0; j < SUBJECTS_NUMBER; ++j) {
+				if (marks[i][j] != 0 && marks[i][j] < minMark) {
+					minMark = marks[i][j];
+				}
+			}
+		}
+		return minMark;
+	}
+
 	void DeleteSubject(int semesterNumber_, string subjectName) {
 		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
 			if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
@@ -139,57 +151,46 @@ public:
 			}
 		}
 	}
-		/*void DeleteSubject(int semesterNumber_, int index) {
-			strcpy_s(subjectNames[semesterNumber_][index], "");
-			marks[semesterNumber_][index] = 0;
-			for (int j = index + 1; j < SUBJECTS_NUMBER; ++j) {
-				marks[semesterNumber_][j - 1] = marks[semesterNumber_][j];
-				strcpy_s(subjectNames[semesterNumber_][j - 1], subjectNames[semesterNumber_][j]);
-			}
-		}*/
-
-		void SetMark(int semesterNumber_, string subjectName, int mark) {
-			for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-				if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
-					marks[semesterNumber_][i] = mark;
-					break;
-				}
+	void SetMark(int semesterNumber_, string subjectName, int mark) {
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
+				marks[semesterNumber_][i] = mark;
+				break;
 			}
 		}
+	}
 
-		bool IsSubjectExists(int semesterNumber_, string subjectName) {
-			for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-				if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		string GetSubjcetName(int semesterNumber_, int index) {
-			return subjectNames[semesterNumber_][index];
-		}
-
-		int GetMarksNumberInSemester(int semesterNumber_) {
-			int countMarks = 0;
-			for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-				if (marks[semesterNumber_][i] == 0) {
-					break;
-				}
-				else {
-					countMarks += 1;
-				}
-			}
-			return countMarks;
-		}
-
-		void AddMark(int semesterNumber_, string subjectName, int mark) {
-			for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-				if (marks[semesterNumber_][i] == 0) {
-					marks[semesterNumber_][i] = mark;
-					strcpy_s(subjectNames[semesterNumber_][i], subjectName.c_str());
-					break;
-				}
+	bool IsSubjectExists(int semesterNumber_, string subjectName) {
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (!strcmp(subjectNames[semesterNumber_][i], subjectName.c_str())) {
+				return true;
 			}
 		}
-	};
+		return false;
+	}
+	string GetSubjcetName(int semesterNumber_, int index) {
+		return subjectNames[semesterNumber_][index];
+	}
+	int GetMarksNumberInSemester(int semesterNumber_) {
+		int countMarks = 0;
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (marks[semesterNumber_][i] == 0) {
+				break;
+			}
+			else {
+				countMarks += 1;
+			}
+		}
+		return countMarks;
+	}
+
+	void AddMark(int semesterNumber_, string subjectName, int mark) {
+		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
+			if (marks[semesterNumber_][i] == 0) {
+				marks[semesterNumber_][i] = mark;
+				strcpy_s(subjectNames[semesterNumber_][i], subjectName.c_str());
+				break;
+			}
+		}
+	}
+};

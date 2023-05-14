@@ -100,6 +100,51 @@ string GetFilenameFromParsedStudent(string parsedStudent) {
     return filename;
 }
 
+int GetNumberOfExcelentStudents(string path) {
+    List<string>* allStudents = GetParsedStudentsFromDir(path);
+    int counter = 0;
+
+    for (int i = 0; i < allStudents->Length(); ++i) {
+
+        Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+        if (student.GetMinMark() == 5) {
+
+            counter += 1;
+        }
+    }
+    return counter;
+}
+
+int GetNumberOfGoodStudents(string path) {
+    List<string>* allStudents = GetParsedStudentsFromDir(path);
+    int counter = 0;
+
+    for (int i = 0; i < allStudents->Length(); ++i) {
+
+        Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+        if (student.GetMinMark() == 4) {
+
+            counter += 1;
+        }
+    }
+    return counter;
+}
+
+int GetNumberOfBadStudents(string path) {
+    List<string>* allStudents = GetParsedStudentsFromDir(path);
+    int counter = 0;
+
+    for (int i = 0; i < allStudents->Length(); ++i) {
+
+        Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+        if (student.GetMinMark() == 2 || student.GetMinMark() == 3) {
+
+            counter += 1;
+        }
+    }
+    return counter;
+}
+
 string GetSubjectName(string mark) {
     stringstream ss(mark);
     string subjectName, tempString;

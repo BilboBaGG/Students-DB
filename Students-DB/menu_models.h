@@ -1,7 +1,23 @@
 #pragma once
 
+class InfoMenu {
+public:
+	static void Run(string message) {
+		system(CLEAR_COMMAND);
+		PrintOneParam(message);
+		int key = 0;
+		while (true) {
+			key = _getch();
+			if (key == ESC || key == ENTER) {
+				break;
+			}
+		}
+	}
+};
+
+
 class MenuModel {
-private:
+protected:
 	int pressedKey = 0;
 	bool isExit = false;
 
@@ -58,7 +74,7 @@ public:
 };
 
 class ReturnMenuModel {
-private:
+protected:
 	int pressedKey = 0;
 	bool isExit = false;
 
@@ -130,7 +146,9 @@ protected:
 
 		backupParams = ParseParams();
 		params = ParseParams();
-		params[0] = GREEN + params[0] + RESET;
+		if (params.Length() != 0) {
+			params[0] = GREEN + params[0] + RESET;
+		}
 		selectedOption = 0;
 
 		identicalButtonsNumber = params.Length() - 2;

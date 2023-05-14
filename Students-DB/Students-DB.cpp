@@ -25,16 +25,5 @@ int main() {
 		}
 		cout << "\n";
 	}
-
-	kolobok.DeleteSubject(0, 0);
-
-
-	for (int j = 0; j < 1; ++j) {
-		cout << j << " semester\n";
-		for (int i = 0; i < SUBJECTS_NUMBER; ++i) {
-			cout << kolobok.GetSubjcetName(j, i) << " : " << kolobok.GetMark(j, i) << endl;
-		}
-		cout << "\n";
-	}
-	cout << kolobok.GetMarksNumberInSemester(0);*/
+	cout << kolobok.GetMinMark();*/
 }

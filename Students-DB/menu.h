@@ -19,21 +19,6 @@ GenderInputMenu genderInut{};
 InputNumberOnlyMenu numberOnlyInput{};
 InputMarkMenu markMenu{};
 
-class InfoMenu {
-public:
-	static void Run(string message) {
-		system(CLEAR_COMMAND);
-		PrintOneParam(message);
-		int key = 0;
-		while (true) {
-			key = _getch();
-			if (key == ESC || key == ENTER) {
-				break;
-			}
-		}
-	}
-};
-
 class SelectDirParam : public virtual SelectParamMenuReturnModel {
 public:
 	SelectDirParam(string object_, string header_) {
@@ -364,6 +349,168 @@ private:
 	}
 };
 
+class ExcelentStudentMenu : public virtual MainChooseMenu {
+public:
+	ExcelentStudentMenu() {
+		object = "student";
+	}
+private:
+	void Printer() override {
+		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
+	}
+
+	List<string>& ParseParams() override {
+		List<string>* allStudents = GetParsedStudentsFromDir(currentPath);
+		List<string>* excelentStudents = new List<string>();
+
+		for (int i = 0; i < allStudents->Length(); ++i) {
+
+			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+			if (student.GetMinMark() == 5) {
+
+				excelentStudents->Append(allStudents->Get(i));
+			}
+		}
+		return *excelentStudents;
+	}
+
+	void OnEnter() override {
+		currentPath += "\\" + GetFilenameFromParsedStudent(backupParams[selectedOption]);
+		StudentsParamsMenu paramsMenu{};
+		paramsMenu.Run();
+		RestoreCurrentPath();
+		ResetParams();
+		isExit = true;
+		
+	}
+};
+
+class GoodStudentMenu : public virtual MainChooseMenu {
+public:
+	GoodStudentMenu() {
+		object = "student";
+	}
+private:
+	void Printer() override {
+		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
+	}
+
+	List<string>& ParseParams() override {
+		List<string>* allStudents = GetParsedStudentsFromDir(currentPath);
+		List<string>* goodStudents = new List<string>();
+
+		for (int i = 0; i < allStudents->Length(); ++i) {
+
+			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+			if (student.GetMinMark() == 4) {
+
+				goodStudents->Append(allStudents->Get(i));
+			}
+		}
+		return *goodStudents;
+	}
+
+	void OnEnter() override {
+		currentPath += "\\" + GetFilenameFromParsedStudent(backupParams[selectedOption]);
+		StudentsParamsMenu paramsMenu{};
+		paramsMenu.Run();
+		RestoreCurrentPath();
+		ResetParams();
+		isExit = true;
+
+	}
+};
+
+
+class BadStudentMenu : public virtual MainChooseMenu {
+public:
+	BadStudentMenu() {
+		object = "student";
+	}
+private:
+	void Printer() override {
+		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
+	}
+
+	List<string>& ParseParams() override {
+		List<string>* allStudents = GetParsedStudentsFromDir(currentPath);
+		List<string>* goodStudents = new List<string>();
+
+		for (int i = 0; i < allStudents->Length(); ++i) {
+
+			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+			if (student.GetMinMark() == 2 || student.GetMinMark() == 3) {
+
+				goodStudents->Append(allStudents->Get(i));
+			}
+		}
+		return *goodStudents;
+	}
+
+	void OnEnter() override {
+		currentPath += "\\" + GetFilenameFromParsedStudent(backupParams[selectedOption]);
+		StudentsParamsMenu paramsMenu{};
+		paramsMenu.Run();
+		RestoreCurrentPath();
+		ResetParams();
+		isExit = true;
+
+	}
+};
+
+class StudentModeMenu : public virtual MainChooseMenu {
+public:
+	StudentModeMenu() {
+		header = "Select mode to view students";
+	}
+private:
+	string header;
+	List<string>& ParseParams() override {
+		List<string>* params = new List<string>;
+		params->Append("Excelent students");
+		params->Append("Good students");
+		params->Append("Students with bad marks");
+		return *params;
+	}
+	void Printer() override {
+		PrintParams(params, backupParams, header);
+	}
+	void OnEnter() override {
+		switch (selectedOption) {
+		case 0: {
+			if (GetNumberOfExcelentStudents(currentPath) > 0) {
+				ExcelentStudentMenu studentMenu;
+				studentMenu.Run();
+			}
+			else {
+				InfoMenu::Run("There are no excelent student in " + GetGroup());
+			}
+			break;
+		}
+		case 1: {
+			if (GetNumberOfGoodStudents(currentPath) > 0) {
+				GoodStudentMenu studentMenu;
+				studentMenu.Run();
+			}
+			else {
+				InfoMenu::Run("There are no good student in " + GetGroup());
+			}
+			break;
+		}
+		case 2: {
+			if (GetNumberOfBadStudents(currentPath) > 0) {
+				BadStudentMenu studentMenu;
+				studentMenu.Run();
+			}
+			else {
+				InfoMenu::Run("There are no bad student in " + GetGroup());
+			}
+			break;
+		}
+		}
+	}
+};
+
 class StudentSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	StudentSelectionMenu() {
@@ -460,7 +607,9 @@ private:
 			student.Run();
 		}
 		else {
-			InfoMenu::Run("Doesen't work now!");
+			StudentModeMenu modeMenu;
+			modeMenu.Run();
+
 		}
 	}
 };
