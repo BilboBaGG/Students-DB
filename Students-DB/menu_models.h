@@ -245,3 +245,26 @@ private:
 		return backupParams[selectedOption];
 	}
 };
+
+class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
+protected:
+	virtual List<string>& ParseParams() = 0;
+	virtual void NextMenuRun(string selectedParam) = 0;
+	virtual void OnCreate() = 0;
+	virtual void OnDelete() = 0;
+
+	void OnEnter() override {
+		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
+			NextMenuRun(backupParams[selectedOption]);
+		}
+		else {
+			if (IsAdditionMenu(selectedOption, identicalButtonsNumber)) {
+				OnCreate();
+			}
+			else {
+				OnDelete();
+			}
+
+		}
+	}
+};

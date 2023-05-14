@@ -64,29 +64,6 @@ private:
 	}
 };
 
-class DefaultSelectionMenuWithButtons : public virtual MainChooseMenu {
-protected:
-	virtual List<string>& ParseParams() = 0;
-	virtual void NextMenuRun(string selectedParam) = 0;
-	virtual void OnCreate() = 0;
-	virtual void OnDelete() = 0;
-
-	void OnEnter() override {
-		if (IsIdenticalParam(selectedOption, identicalButtonsNumber)) {
-			NextMenuRun(backupParams[selectedOption]);
-		}
-		else {
-			if (IsAdditionMenu(selectedOption, identicalButtonsNumber)) {
-				OnCreate();
-			}
-			else {
-				OnDelete();
-			}
-
-		}
-	}
-};
-
 class MarksSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
 	MarksSelectionMenu(int selectedSemester_) {
@@ -349,12 +326,14 @@ private:
 	}
 };
 
-class ExcelentStudentMenu : public virtual MainChooseMenu {
+class TypeStudentMenu : public virtual MainChooseMenu {
 public:
-	ExcelentStudentMenu() {
+	TypeStudentMenu() {
 		object = "student";
 	}
-private:
+protected:
+	virtual bool IsValid(int mark) = 0;
+
 	void Printer() override {
 		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
 	}
@@ -366,7 +345,7 @@ private:
 		for (int i = 0; i < allStudents->Length(); ++i) {
 
 			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-			if (student.GetMinMark() == 5) {
+			if (IsValid(student.GetMinMark())) {
 
 				excelentStudents->Append(allStudents->Get(i));
 			}
@@ -381,80 +360,28 @@ private:
 		RestoreCurrentPath();
 		ResetParams();
 		isExit = true;
-		
-	}
-};
-
-class GoodStudentMenu : public virtual MainChooseMenu {
-public:
-	GoodStudentMenu() {
-		object = "student";
-	}
-private:
-	void Printer() override {
-		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
-	}
-
-	List<string>& ParseParams() override {
-		List<string>* allStudents = GetParsedStudentsFromDir(currentPath);
-		List<string>* goodStudents = new List<string>();
-
-		for (int i = 0; i < allStudents->Length(); ++i) {
-
-			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-			if (student.GetMinMark() == 4) {
-
-				goodStudents->Append(allStudents->Get(i));
-			}
-		}
-		return *goodStudents;
-	}
-
-	void OnEnter() override {
-		currentPath += "\\" + GetFilenameFromParsedStudent(backupParams[selectedOption]);
-		StudentsParamsMenu paramsMenu{};
-		paramsMenu.Run();
-		RestoreCurrentPath();
-		ResetParams();
-		isExit = true;
 
 	}
 };
 
-
-class BadStudentMenu : public virtual MainChooseMenu {
-public:
-	BadStudentMenu() {
-		object = "student";
+class ExcelentStudentMenu : public virtual TypeStudentMenu {
+protected:
+	bool IsValid(int mark) override {
+		return (mark == 5);
 	}
-private:
-	void Printer() override {
-		PrintParams(params, backupParams, "Select excelent " + object + " from " + GetGroup());
+};
+
+class GoodStudentMenu : public virtual TypeStudentMenu {
+protected:
+	bool IsValid(int mark) override {
+		return (mark == 4);
 	}
+};
 
-	List<string>& ParseParams() override {
-		List<string>* allStudents = GetParsedStudentsFromDir(currentPath);
-		List<string>* goodStudents = new List<string>();
-
-		for (int i = 0; i < allStudents->Length(); ++i) {
-
-			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-			if (student.GetMinMark() == 2 || student.GetMinMark() == 3) {
-
-				goodStudents->Append(allStudents->Get(i));
-			}
-		}
-		return *goodStudents;
-	}
-
-	void OnEnter() override {
-		currentPath += "\\" + GetFilenameFromParsedStudent(backupParams[selectedOption]);
-		StudentsParamsMenu paramsMenu{};
-		paramsMenu.Run();
-		RestoreCurrentPath();
-		ResetParams();
-		isExit = true;
-
+class BadStudentMenu : public virtual TypeStudentMenu {
+protected:
+	bool IsValid(int mark) override {
+		return (mark == 2 || mark == 3);
 	}
 };
 
@@ -673,8 +600,6 @@ private:
 		}
 	}
 };
-
-
 
 class InstituteSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
