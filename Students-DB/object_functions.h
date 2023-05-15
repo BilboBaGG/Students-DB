@@ -100,14 +100,14 @@ string GetFilenameFromParsedStudent(string parsedStudent) {
     return filename;
 }
 
-int GetNumberOfExcelentStudents(string path) {
+int GetNumberOfTypedStudents(string path, int mark) {
     List<string>* allStudents = GetParsedStudentsFromDir(path);
     int counter = 0;
 
     for (int i = 0; i < allStudents->Length(); ++i) {
 
         Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-        if (student.GetMinMark() == 5) {
+        if (student.GetMinMark() == mark) {
 
             counter += 1;
         }
@@ -115,14 +115,14 @@ int GetNumberOfExcelentStudents(string path) {
     return counter;
 }
 
-int GetNumberOfGoodStudents(string path) {
-    List<string>* allStudents = GetParsedStudentsFromDir(path);
+int CountValidStudents(int mark, int minYear, int maxYear) {
+    List<string>* allStudents = GetParsedStudentsFromDir(currentPath);
     int counter = 0;
 
     for (int i = 0; i < allStudents->Length(); ++i) {
 
-        Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-        if (student.GetMinMark() == 4) {
+        Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+        if (student.GetMinMark() == mark && student.GetBirthday().GetYear() >= minYear && student.GetBirthday().GetYear() <= maxYear) {
 
             counter += 1;
         }
@@ -130,20 +130,6 @@ int GetNumberOfGoodStudents(string path) {
     return counter;
 }
 
-int GetNumberOfBadStudents(string path) {
-    List<string>* allStudents = GetParsedStudentsFromDir(path);
-    int counter = 0;
-
-    for (int i = 0; i < allStudents->Length(); ++i) {
-
-        Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-        if (student.GetMinMark() == 2 || student.GetMinMark() == 3) {
-
-            counter += 1;
-        }
-    }
-    return counter;
-}
 
 string GetSubjectName(string mark) {
     stringstream ss(mark);

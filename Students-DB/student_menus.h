@@ -288,6 +288,11 @@ class TypeStudentMenu : public virtual MainChooseMenu {
 protected:
 	string type = "";
 	virtual bool IsValid(int mark) = 0;
+	int minYear;
+	int maxYear;
+	bool IsYearValid(int year) {
+		return (year >= minYear && year <= maxYear);
+	}
 
 	void Printer() override {
 		PrintParams(params, backupParams, "Select " + type + " student from " + GetGroup());
@@ -300,7 +305,7 @@ protected:
 		for (int i = 0; i < allStudents->Length(); ++i) {
 
 			Student student = Read(currentPath + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-			if (IsValid(student.GetMinMark())) {
+			if (IsValid(student.GetMinMark()) && IsYearValid(student.GetBirthday().GetYear())) {
 
 				excelentStudents->Append(allStudents->Get(i));
 			}
@@ -321,7 +326,9 @@ protected:
 
 class ExcelentStudentMenu : public virtual TypeStudentMenu {
 public:
-	ExcelentStudentMenu() {
+	ExcelentStudentMenu(int minYear_, int maxYear_) {
+		minYear = minYear_;
+		maxYear = maxYear_;
 		type = "excelent";
 	}
 private:
@@ -332,7 +339,9 @@ private:
 
 class GoodStudentMenu : public virtual TypeStudentMenu {
 public:
-	GoodStudentMenu() {
+	GoodStudentMenu(int minYear_, int maxYear_) {
+		minYear = minYear_;
+		maxYear = maxYear_;
 		type = "good";
 	}
 private:
@@ -343,7 +352,9 @@ private:
 
 class BadStudentMenu : public virtual TypeStudentMenu {
 public:
-	BadStudentMenu() {
+	BadStudentMenu(int minYear_, int maxYear_) {
+		minYear = minYear_;
+		maxYear = maxYear_;
 		type = "bad";
 	}
 private:
@@ -372,9 +383,34 @@ private:
 	void OnEnter() override {
 		switch (selectedOption) {
 		case 0: {
-			if (GetNumberOfExcelentStudents(currentPath) > 0) {
-				ExcelentStudentMenu studentMenu;
-				studentMenu.Run();
+			if (GetNumberOfTypedStudents(currentPath, 5) > 0) {
+				string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
+				while (minYear == "") {
+					minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
+				}
+
+				if (minYear != ESCAPE_STRING) {
+					string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
+
+					while (maxYear == "") {
+						maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
+					}
+
+					if (stoi(maxYear) < stoi(minYear)) {
+						InfoMenu::Run("You entered too small maximum year!!");
+						break;
+					}
+
+					if (maxYear != ESCAPE_STRING) {	
+						if (CountValidStudents(5, stoi(minYear), stoi(maxYear)) > 0 ) {
+							ExcelentStudentMenu studentMenu{ stoi(minYear), stoi(maxYear) };
+							studentMenu.Run();
+						}
+						else {
+							InfoMenu::Run("No such students in this date range!!");
+						}
+					}
+				}
 			}
 			else {
 				InfoMenu::Run("There are no excelent student in " + GetGroup());
@@ -382,9 +418,34 @@ private:
 			break;
 		}
 		case 1: {
-			if (GetNumberOfGoodStudents(currentPath) > 0) {
-				GoodStudentMenu studentMenu;
-				studentMenu.Run();
+			if (GetNumberOfTypedStudents(currentPath, 4) > 0) {
+				string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
+				while (minYear == "") {
+					minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
+				}
+
+				if (minYear != ESCAPE_STRING) {
+					string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
+
+					while (maxYear == "") {
+						maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
+					}
+
+					if (stoi(maxYear) < stoi(minYear)) {
+						InfoMenu::Run("You entered too small maximum year!!");
+						break;
+					}
+
+					if (maxYear != ESCAPE_STRING) {
+						if (CountValidStudents(4, stoi(minYear), stoi(maxYear)) > 0) {
+							GoodStudentMenu studentMenu{ stoi(minYear),stoi(maxYear) };
+							studentMenu.Run();
+						}
+						else {
+							InfoMenu::Run("No such students in this date range!!");
+						}
+					}
+				}
 			}
 			else {
 				InfoMenu::Run("There are no good student in " + GetGroup());
@@ -392,9 +453,34 @@ private:
 			break;
 		}
 		case 2: {
-			if (GetNumberOfBadStudents(currentPath) > 0) {
-				BadStudentMenu studentMenu;
-				studentMenu.Run();
+			if (GetNumberOfTypedStudents(currentPath, 2) + GetNumberOfTypedStudents(currentPath, 3) > 0) {
+				string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
+				while (minYear == "") {
+					minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
+				}
+
+				if (minYear != ESCAPE_STRING) {
+					string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
+
+					while (maxYear == "") {
+						maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
+					}
+
+					if (stoi(maxYear) < stoi(minYear)) {
+						InfoMenu::Run("You entered too small maximum year!!");
+						break;
+					}
+
+					if (maxYear != ESCAPE_STRING) {
+						if (CountValidStudents(2, stoi(minYear), stoi(maxYear)) + CountValidStudents(3, stoi(minYear), stoi(maxYear)) > 0) {
+							BadStudentMenu studentMenu{ stoi(minYear),stoi(maxYear) };
+							studentMenu.Run();
+						}
+						else {
+							InfoMenu::Run("No such students in this date range!!");
+						}
+					}
+				}
 			}
 			else {
 				InfoMenu::Run("There are no bad student in " + GetGroup());
