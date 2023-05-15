@@ -62,5 +62,8 @@
     <ClInclude Include="student_menus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="crypto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

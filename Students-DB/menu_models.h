@@ -140,18 +140,18 @@ protected:
 	virtual List<string>& ParseParams() { return *GetClearList(); }
 	virtual string InputMenu() { return ""; }
 
-	void ResetParams() {
+	virtual void ResetParams() {
 		//params.Clear();
 		//backupParams.Clear();
 
 		backupParams = ParseParams();
 		params = ParseParams();
-		if (params.Length() != 0) {
-			params[0] = GREEN + params[0] + RESET;
-		}
+
+		params[0] = GREEN + params[0] + RESET;
 		selectedOption = 0;
 
 		identicalButtonsNumber = params.Length() - 2;
+
 	}
 
 	void StartFunction() {

@@ -136,6 +136,7 @@
     <ClCompile Include="Students-DB.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="crypto.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="default_selection_menus.h" />
     <ClInclude Include="directory_functions.h" />

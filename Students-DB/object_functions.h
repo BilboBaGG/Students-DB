@@ -94,25 +94,25 @@ string GetFilenameFromParsedStudent(string parsedStudent) {
     getline(ss, tempString, ' ');
     filename += tempString + "_";
     getline(ss, tempString);
-    filename += tempString + ".bin"; // .enc
+    filename += tempString + ".bin";
 
 
     return filename;
 }
 
-int GetNumberOfTypedStudents(string path, int mark) {
+List<Student*>* GetTypedStudents(string path, int mark) {
     List<string>* allStudents = GetParsedStudentsFromDir(path);
-    int counter = 0;
+    List<Student*>* temp = new List<Student*>();
 
     for (int i = 0; i < allStudents->Length(); ++i) {
 
-        Student student = Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
-        if (student.GetMinMark() == mark) {
+        Student* student = &Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
+        if (student->GetMinMark() == mark) {
 
-            counter += 1;
+            temp->Append(student);
         }
     }
-    return counter;
+    return temp;
 }
 
 int CountValidStudents(int mark, int minYear, int maxYear) {

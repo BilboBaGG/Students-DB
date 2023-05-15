@@ -80,21 +80,6 @@ bool IsDirectoryExists(string dir, string path) {
     return (GetObjectsFromDir(path)->Find(dir) != -1);
 }
 
-//List<string>* GetStudentsFromDir(string path) { 
-//    List<string>* files = GetObjectsFromDir(path);
-//    List<string>* students = new List<string>;
-//
-//    for (int i = 0; i < files->Length(); ++i) {
-//        stringstream ss(files->Get(i));
-//        string studentString;
-//        getline(ss, studentString, '.');
-//        students->Append(studentString);
-//    }
-//    delete files;
-//
-//    return students;
-//}
-
 List<string>* GetParsedStudentsFromDirWithExtraButtons(string path, string object) {
     List<string>* studentParams = GetParsedStudentsFromDir(path);
     studentParams->Append("Create new " + object);
@@ -113,7 +98,7 @@ void DeleteDirectory(string dirName) {
     system(rmdirCommand.c_str());
 }
 
-void DeleteStudentFile(string fileName) {
+void DeleteFileByFilename(string fileName) {
     string rmFileCommand = "del \"" + fileName +"\"";
     system(rmFileCommand.c_str());
 }

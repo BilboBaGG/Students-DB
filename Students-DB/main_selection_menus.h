@@ -2,23 +2,28 @@
 
 #include <conio.h>
 #include <windows.h>
-
+#include <fstream>
 
 #include "list.h"
 #include "settings.h"
 #include "student.h"
-#include "file_functions.h"
 
 string currentPath = ".\\Students";
 Student* currentStudent;
+string userPasswd = "";
 
 #include "printers.h"
 #include "directory_functions.h"
+
+#include "crypto.h"
+#include "file_functions.h"
+
 #include "object_functions.h"
 
 #include "menu_models.h"
 #include "input_menus.h"
 
+InputPasswdMenu passwdMenu{};
 BaseInputMenu baseInputMenu{};
 InputLetterOnlyMenu letterOnlyInputMenu{};
 GenderInputMenu genderInut{};
@@ -27,6 +32,7 @@ InputMarkMenu markMenu{};
 
 #include "default_selection_menus.h"
 #include "student_menus.h"
+
 
 
 class GroupSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
@@ -88,9 +94,9 @@ private:
 	}
 };
 
-class MainMenu : public virtual DefaultSelectionMenuWithButtons {
+class InstituteSelectionMenu : public virtual DefaultSelectionMenuWithButtons {
 public:
-	MainMenu() {
+	InstituteSelectionMenu() {
 		object = "institute";
 	}
 private:
@@ -128,7 +134,7 @@ private:
 			}
 		}
 	}
-	void OnDelete() override { // Default (we can make custom)
+	void OnDelete() override {
 		if (identicalButtonsNumber > 0) {
 			SelectDirParam delMenu = SelectDirParam(object, "Select " + object + " to delete");
 			string selectedObject = delMenu.Run();
@@ -142,6 +148,29 @@ private:
 		}
 		else {
 			InfoMenu::Run("Nothing to delete!");
+		}
+	}
+};
+
+
+class MainDB {
+public:
+	static void Run() {
+		while (true) {
+			userPasswd = passwdMenu.Run("Enter the database password: ", "", 30);
+
+			while (userPasswd != GetEncPasswd() && userPasswd != ESCAPE_STRING) {
+				userPasswd = passwdMenu.Run("Wrong password! Enter the password again: ", "", 30);
+			}
+
+			if (userPasswd != ESCAPE_STRING) {
+				InstituteSelectionMenu selectInstitute;
+				selectInstitute.Run();
+			}
+			else {
+				system(CLEAR_COMMAND);
+				break;
+			}
 		}
 	}
 };
