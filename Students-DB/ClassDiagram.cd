@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BaseInputMenu">
+    <Position X="21.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Date">
+    <Position X="36.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkAAAAAAAAIARAAAAAAAACAAQAAAABBABAAAAAAAA=</HashCode>
+      <FileName>date.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DefaultSelectionMenuWithButtons">
+    <Position X="27.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAACAAAAAAAMBAAAAAAAA=</HashCode>
+      <FileName>menu_models.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DeleteMark">
+    <Position X="36" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFgAAAEAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Element&lt;Template&gt;">
+    <Position X="35" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAIAAAIAAAAgAAAAIAAAAAAAAAAgAAAAIAAA=</HashCode>
+      <FileName>list.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GenderInputMenu">
+    <Position X="25.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GroupSelectionMenu">
+    <Position X="23.75" Y="9.25" Width="1.5" />
+    <InheritanceLine Type="DefaultSelectionMenuWithButtons" FixedToPoint="true">
+      <Path>
+        <Point X="28" Y="8.752" />
+        <Point X="28" Y="9.219" />
+        <Point X="24.562" Y="9.219" />
+        <Point X="24.562" Y="9.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAIAQAAAAAACAAAAAAAEBAAAAAAAA=</HashCode>
+      <FileName>main_selection_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InfoMenu">
+    <Position X="23.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>menu_models.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputLetterOnlyMenu">
+    <Position X="22.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputMarkMenu">
+    <Position X="23.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputNumberOnlyMenu">
+    <Position X="24.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputPasswdMenu">
+    <Position X="24.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgEAAAAAAAAAAAAAAAAAAAIAAI=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InstituteSelectionMenu">
+    <Position X="27.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAQAAAAAAAAAAIAAAAAAAACAAAAAAAEBAAAAAAAA=</HashCode>
+      <FileName>main_selection_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KeyboardInputMenu">
+    <Position X="25.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgEAAAAAAAAAAAAAAAAAAAIAAI=</HashCode>
+      <FileName>input_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="List&lt;Template&gt;">
+    <Position X="33.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAABAgEAAAABAAAEIAQIAAAAAAAAEAAI=</HashCode>
+      <FileName>list.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainChooseMenu">
+    <Position X="30.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABACACAACAQAAAAAAAAAgAwAAAgIhAAAAAAAQ=</HashCode>
+      <FileName>menu_models.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainDB">
+    <Position X="22.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>main_selection_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MarksSelectionMenu">
+    <Position X="25.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQQAAAAAAAAAIAAAAAAAACBAAAAAAEFAAAAAAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuModel">
+    <Position X="27.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQABAAAAAACAQAAAAEAEAAAAAAAAAogAAAAAAAI=</HashCode>
+      <FileName>menu_models.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ReturnMenuModel">
+    <Position X="31.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEABAAAAAACAQAAAAEAEAAAAAAAAAogAAAAEAAI=</HashCode>
+      <FileName>menu_models.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectDirParam">
+    <Position X="32.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAEAAAAAA=</HashCode>
+      <FileName>default_selection_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectParamMenuReturnModel">
+    <Position X="33.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQBACACAACAAAAAAAAAAAAAQAAAgohAAAAEAAQ=</HashCode>
+      <FileName>menu_models.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectStudentParam">
+    <Position X="34.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAABAAAAAAAA=</HashCode>
+      <FileName>default_selection_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SemesterSelectionMenu">
+    <Position X="36" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQQAAAAAAIAAAAAAAAAAAAAAAAAAAIBAAAAAAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Student">
+    <Position X="20.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>4gCgAIggYAAASIBAgAAOogiQCAAkRAAEJAAAYBAiBAE=</HashCode>
+      <FileName>student.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentModeMenu">
+    <Position X="29" Y="6.75" Width="1.5" />
+    <InheritanceLine Type="MainChooseMenu" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="6.05" />
+        <Point X="31.5" Y="6.375" />
+        <Point X="29.625" Y="6.375" />
+        <Point X="29.625" Y="6.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAQQAAAAAAAAAAAAAAAAAAIAAAAAAAIBAAAAAAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentsOptionsSelectionMenu">
+    <Position X="30.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAQQAAAAAAAAAAAAAAAAAAAAAAAAAAIBAAAAAAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentsParamsMenu">
+    <Position X="32.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQQAAAAAAEAAAAAAAAAAAAAAAAAAAIBAAAACAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TypeStudentMenu">
+    <Position X="34.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAIAAAABAAAAAIBAAAAAAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StudentSelectionMenu">
+    <Position X="29" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAIAAAAAAAACAIAAAAAEBAAAAAAAA=</HashCode>
+      <FileName>student_menus.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

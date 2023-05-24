@@ -113,7 +113,7 @@ private:
 	List<string>& ParseParams() override {
 		return *GetNewDirParamsWithExtraParams(currentPath, object);
 	}
-	void OnCreate() { // Default (we can make custom)
+	void OnCreate() {
 		string createdObject = baseInputMenu.Run("Enter the name of the new " + object + " : ", "", 30);
 
 		while (createdObject.length() == 0) {
@@ -157,10 +157,10 @@ class MainDB {
 public:
 	static void Run() {
 		while (true) {
-			userPasswd = passwdMenu.Run("Enter the database password: ", "", 30);
+			userPasswd = passwdMenu.Run("Enter the database password: ", 30);
 
 			while (userPasswd != GetEncPasswd() && userPasswd != ESCAPE_STRING) {
-				userPasswd = passwdMenu.Run("Wrong password! Enter the password again: ", "", 30);
+				userPasswd = passwdMenu.Run("Wrong password! Enter the password again: ", 30);
 			}
 
 			if (userPasswd != ESCAPE_STRING) {

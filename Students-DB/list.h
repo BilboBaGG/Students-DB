@@ -191,23 +191,6 @@ public:
 		}
 		return -1;
 	}
-
-	void Print() {
-		Element<Template>* tempElementPointer = firstPointer;
-
-		cout << "[";
-		while (true) {
-			cout << tempElementPointer->GetElement();
-			tempElementPointer = tempElementPointer->GetPointer();
-			if (tempElementPointer == NULL) {
-				break;
-			}
-			else {
-				cout << ", ";
-			}
-		}
-		cout << "]\n";
-	}
 };
 
 

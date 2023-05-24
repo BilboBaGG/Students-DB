@@ -83,10 +83,6 @@ public:
 		strcpy_s(gender, gender_.c_str());
 	}
 
-	int GetAdmissionYear() {
-		return admissionYear;
-	}
-
 	string GetStringAdmissionYear() {
 		if (admissionYear == -1) {
 			return "";

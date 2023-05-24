@@ -108,7 +108,6 @@ List<Student*>* GetTypedStudents(string path, int mark) {
 
         Student* student = &Read(path + "\\" + GetFilenameFromParsedStudent(allStudents->Get(i)));
         if (student->GetMinMark() == mark) {
-
             temp->Append(student);
         }
     }

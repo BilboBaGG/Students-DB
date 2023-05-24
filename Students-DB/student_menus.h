@@ -1,6 +1,5 @@
 #pragma once
 
-
 class DeleteMark : public virtual SelectParamMenuReturnModel {
 public:
 	DeleteMark(int selectedSemester_) {
@@ -331,6 +330,55 @@ protected:
 	}
 }; 
 
+class TypeMenuLogic {
+public:
+	static void Run(List<Student*>& students, string type) {
+		if (students.Length() > 0) {
+			string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
+			while (minYear == "") {
+				minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
+			}
+
+			if (minYear != ESCAPE_STRING) {
+				string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
+
+				while (maxYear == "") {
+					maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
+				}
+
+				if (maxYear != ESCAPE_STRING) {
+					if (stoi(maxYear) < stoi(minYear)) {
+						InfoMenu::Run("You entered too small maximum year!!");
+					}
+					else {
+						List<string> studentsString;
+						List<string> studentBackupString;
+
+						for (int i = 0; i < students.Length(); ++i) {
+							Student& tempStudent = *students.Get(i);
+							if (tempStudent.GetBirthday().GetYear() <= stoi(maxYear) && tempStudent.GetBirthday().GetYear() >= stoi(minYear)) {
+								studentsString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
+								studentBackupString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
+							}
+						}
+
+						if (studentsString.Length() > 0) {
+							TypeStudentMenu studentMenu{ &studentBackupString, &studentsString, type };
+							studentMenu.Run();
+						}
+						else {
+							InfoMenu::Run("No such students in this date range!!");
+						}
+					}
+				}
+			}
+		}
+		else {
+			InfoMenu::Run("There are no " + type + " student in " + GetGroup());
+		}
+	}
+};
+
 class StudentModeMenu : public virtual MainChooseMenu {
 public:
 	StudentModeMenu() {
@@ -340,7 +388,7 @@ private:
 	string header;
 	List<string>& ParseParams() override {
 		List<string>* params = new List<string>;
-		params->Append("Excelent students");
+		params->Append("Excellent students");
 		params->Append("Good students");
 		params->Append("Students with bad marks");
 		return *params;
@@ -352,147 +400,18 @@ private:
 		switch (selectedOption) {
 		case 0: {
 			List<Student*> students = *GetTypedStudents(currentPath, 5);
-			if (students.Length() > 0) {
-				string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
-				while (minYear == "") {
-					minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
-				}
-
-				if (minYear != ESCAPE_STRING) {
-					string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
-
-					while (maxYear == "") {
-						maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
-					}
-
-					if (maxYear != ESCAPE_STRING) {
-						if (stoi(maxYear) < stoi(minYear)) {
-							InfoMenu::Run("You entered too small maximum year!!");
-							break;
-						}
-
-						List<string> studentsString;
-						List<string> studentBackupString;
-
-						for (int i = 0; i < students.Length(); ++i) {
-							Student& tempStudent = *students.Get(i);
-							if (tempStudent.GetBirthday().GetYear() <= stoi(maxYear) && tempStudent.GetBirthday().GetYear() >= stoi(minYear)) {
-								studentsString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
-								studentBackupString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
-							}
-						}
-
-						if (studentsString.Length() > 0) {
-							TypeStudentMenu studentMenu{ &studentBackupString, &studentsString, "excelent" };
-							studentMenu.Run();
-						}
-						else {
-							InfoMenu::Run("No such students in this date range!!");
-						}
-					}
-				}
-			}
-			else {
-				InfoMenu::Run("There are no excelent student in " + GetGroup());
-			}
+			TypeMenuLogic::Run(students, "excellent");
 			break;
 		}
 		case 1: {
 			List<Student*> students = *GetTypedStudents(currentPath, 4);
-			if (students.Length() > 0) {
-				string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
-				while (minYear == "") {
-					minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
-				}
-
-				if (minYear != ESCAPE_STRING) {
-					string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
-
-					while (maxYear == "") {
-						maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
-					}
-
-					if (maxYear != ESCAPE_STRING) {
-						if (stoi(maxYear) < stoi(minYear)) {
-							InfoMenu::Run("You entered too small maximum year!!");
-							break;
-						}
-
-						List<string> studentsString;
-						List<string> studentBackupString;
-
-						for (int i = 0; i < students.Length(); ++i) {
-							Student& tempStudent = *students.Get(i);
-							if (tempStudent.GetBirthday().GetYear() <= stoi(maxYear) && tempStudent.GetBirthday().GetYear() >= stoi(minYear)) {
-								studentsString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
-								studentBackupString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
-							}
-						}
-
-						if (studentsString.Length() > 0) {
-							TypeStudentMenu studentMenu{ &studentBackupString, &studentsString, "excelent" };
-							studentMenu.Run();
-						}
-						else {
-							InfoMenu::Run("No such students in this date range!!");
-						}
-					}
-				}
-			}
-			else {
-				InfoMenu::Run("There are no excelent student in " + GetGroup());
-			}
+			TypeMenuLogic::Run(students, "good");
 			break;
 		}
 		case 2: {
 			List<Student*> students = *GetTypedStudents(currentPath, 3);
-			List<Student*> tempStudents = *GetTypedStudents(currentPath, 2);
-			for (int i = 0; i < tempStudents.Length(); ++i) {
-				students.Append(tempStudents.Get(i));
-			}
-			if (students.Length() > 0) {
-				string minYear = numberOnlyInput.Run("Enter the minimum birthday year of students : ", "", 4);
-				while (minYear == "") {
-					minYear = numberOnlyInput.Run("Enter the minimum birthday year of students correctly : ", "", 4);
-				}
+			TypeMenuLogic::Run(students, "bad");
 
-				if (minYear != ESCAPE_STRING) {
-					string maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students : ", "", 4);
-
-					while (maxYear == "") {
-						maxYear = numberOnlyInput.Run("Enter the maximum birthday year of students correctly : ", "", 4);
-					}
-
-					if (maxYear != ESCAPE_STRING) {
-						if (stoi(maxYear) < stoi(minYear)) {
-							InfoMenu::Run("You entered too small maximum year!!");
-							break;
-						}
-
-						List<string> studentsString;
-						List<string> studentBackupString;
-
-						for (int i = 0; i < students.Length(); ++i) {
-							Student& tempStudent = *students.Get(i);
-							if (tempStudent.GetBirthday().GetYear() <= stoi(maxYear) && tempStudent.GetBirthday().GetYear() >= stoi(minYear)) {
-								studentsString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
-								studentBackupString.Append(tempStudent.GetSurname() + " " + tempStudent.GetName() + " " + tempStudent.GetPatronymic());
-							}
-						}
-
-						if (studentsString.Length() > 0) {
-							TypeStudentMenu studentMenu{ &studentBackupString, &studentsString, "excelent" };
-							studentMenu.Run();
-						}
-						else {
-							InfoMenu::Run("No such students in this date range!!");
-						}
-					}
-				}
-			}
-			else {
-				InfoMenu::Run("There are no excelent student in " + GetGroup());
-			}
 			break;
 		}
 		}
@@ -586,7 +505,7 @@ private:
 		clearParams->Append("Divide students by grades (Variant 73)");
 		return *clearParams;
 	}
-	void Printer() {
+	void Printer() override {
 		PrintParams(params, backupParams, header);
 	}
 	virtual void OnEnter() override {

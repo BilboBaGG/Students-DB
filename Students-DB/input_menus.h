@@ -2,11 +2,13 @@
 
 class KeyboardInputMenu {
 protected:
+	string inputString;
+	int key;
 	virtual bool IsValid(int key) = 0;
 public:
 	string Run(string message, string iString, int maxLength) {
-		string inputString = iString;
-		int key = 0;
+		inputString = iString;
+		key = 0;
 		system(CLEAR_COMMAND);
 		PrintOneParam(message + inputString);
 		while (true) {
@@ -76,13 +78,15 @@ private:
 
 class InputPasswdMenu {
 protected:
-	virtual bool IsValid(int key) {
+	string inputString;
+	int key;
+	bool IsValid(int key) {
 		return (key >= 'a' && key <= 'z' || key == '_' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ');
 	}
 public:
-	string Run(string message, string iString, int maxLength) {
-		string inputString = iString;
-		int key = 0;
+	string Run(string message, int maxLength) {
+		inputString = "";
+		key = 0;
 		system(CLEAR_COMMAND);
 		PrintOneParam(message + inputString);
 		while (true) {
