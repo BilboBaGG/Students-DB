@@ -49,6 +49,7 @@ private:
 		StudentsOptionsSelectionMenu option{};
 		option.Run();
 		RestoreCurrentPath();
+		ResetParams();
 
 	}
 	List<string>& ParseParams() override {
@@ -108,6 +109,7 @@ private:
 		GroupSelectionMenu groupMenu;
 		groupMenu.Run();
 		RestoreCurrentPath();
+		ResetParams();
 	}
 
 	List<string>& ParseParams() override {

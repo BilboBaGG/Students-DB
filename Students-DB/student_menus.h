@@ -187,13 +187,21 @@ private:
 			}
 			break;
 		}
-		case 3: { // Validation!
+		case 3: {
 			string newInstitute = baseInputMenu.Run("Enter the student's institute: ", student.GetInstitute(), DEFAULT_STRING_LENGTH - 1);
 			while (newInstitute == "") {
 				newInstitute = baseInputMenu.Run("Enter the correct institute: ", student.GetInstitute(), DEFAULT_STRING_LENGTH - 1);
 			}
 			if (newInstitute != ESCAPE_STRING) {
+				DeleteFileByFilename(".\\Students\\" + student.GetInstitute() + "\\" + student.GetGroup() + "\\" + student.GetSurname() + "_" + student.GetName() + "_" + student.GetPatronymic() + ".bin.enc");
 				student.SetInstitute(newInstitute);
+				if (!(IsDirectoryExists(student.GetInstitute(), ".\\Students\\"))) {
+					MakeDirectory(".\\Students\\" + student.GetInstitute());
+				}
+				if (!(IsDirectoryExists(student.GetGroup(), ".\\Students\\" + student.GetInstitute() + "\\"))) {
+					MakeDirectory(".\\Students\\" + student.GetInstitute() + "\\" + student.GetGroup());
+				}
+
 			}
 			break;
 		}
@@ -207,13 +215,18 @@ private:
 			}
 			break;
 		}
-		case 5: { // Validation!
+		case 5: {
 			string newGroup = baseInputMenu.Run("Enter the student's group: ", student.GetGroup(), DEFAULT_STRING_LENGTH - 1);
 			while (newGroup == "") {
 				newGroup = baseInputMenu.Run("Enter the correct group: ", student.GetGroup(), DEFAULT_STRING_LENGTH - 1);
 			}
 			if (newGroup != ESCAPE_STRING) {
+				DeleteFileByFilename(".\\Students\\" + student.GetInstitute() + "\\" + student.GetGroup() + "\\" + student.GetSurname() + "_" + student.GetName() + "_" + student.GetPatronymic() + ".bin.enc");
 				student.SetGroup(newGroup);
+
+				if (!(IsDirectoryExists(student.GetGroup(), ".\\Students\\" + student.GetInstitute() + "\\"))) {
+					MakeDirectory(".\\Students\\" + student.GetInstitute() + "\\" + student.GetGroup());
+				}
 			}
 			break;
 		}
