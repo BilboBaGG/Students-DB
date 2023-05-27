@@ -26,7 +26,7 @@ public:
 		object = "mark";
 
 		selectedSemester = selectedSemester_;
-		header = "Here is marks for " + currentStudent->GetSurname() + " " + currentStudent->GetName() + " " + currentStudent->GetPatronymic() + " in " + to_string(selectedSemester + 1) + " semester";
+		header = "Here is marks for student " + currentStudent->GetSurname() + " " + currentStudent->GetName() + " " + currentStudent->GetPatronymic() + " in " + to_string(selectedSemester + 1) + " semester";
 	}
 private:
 	string header;
@@ -37,7 +37,7 @@ private:
 			marks->Append(currentStudent->GetSubjcetName(selectedSemester, i) + ": " + to_string(currentStudent->GetMark(selectedSemester, i)));
 		}
 		marks->Append("Add subject");
-		marks->Append("Delete sybject");
+		marks->Append("Delete subject");
 		return *marks;
 	}
 	void Printer() override {
@@ -111,7 +111,7 @@ private:
 class SemesterSelectionMenu : public virtual MainChooseMenu {
 public:
 	SemesterSelectionMenu(string param) {
-		header = "Select semester marks for " + param;
+		header = "Select semester marks for student " + param;
 	}
 private:
 	string header;

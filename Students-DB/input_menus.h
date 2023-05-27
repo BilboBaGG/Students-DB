@@ -42,7 +42,7 @@ public:
 class BaseInputMenu : public virtual KeyboardInputMenu {
 private:
 	bool IsValid(int key) override{
-		return (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ');
+		return (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ' || key >= 192 && key <= 255);
 	}
 };
 
@@ -50,14 +50,14 @@ private:
 class InputLetterOnlyMenu : public virtual KeyboardInputMenu {
 private:
 	bool IsValid(int key) override {
-		return (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == ' ');
+		return (key >= 'a' && key <= 'z' || key >= 'A' && key <= 'Z' || key == ' ' || key >= 192 && key <= 255);
 	}
 };
 
 class GenderInputMenu : public virtual KeyboardInputMenu {
 private:
 	bool IsValid(int key) override {
-		return (key == 'M' || key == 'W' || key == 'w' || key == 'm');
+		return (key == 'M' || key == 'W' || key == 'w' || key == 'm' || key == 236 || key == 230 || key == 198 || key == 204);
 	}
 };
 
@@ -81,7 +81,7 @@ protected:
 	string inputString;
 	int key;
 	bool IsValid(int key) {
-		return (key >= 'a' && key <= 'z' || key == '_' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ');
+		return (key >= 'a' && key <= 'z' || key == '_' || key >= 'A' && key <= 'Z' || key == '-' || key <= '9' && key >= '0' || key == ' ' || key >= 192 && key <= 255);
 	}
 public:
 	string Run(string message, int maxLength) {
